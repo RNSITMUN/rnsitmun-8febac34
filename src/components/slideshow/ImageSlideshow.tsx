@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "../ui/button";
 
 const SLIDESHOW_IMAGES = [
   "/slideshow/inaugration (1).jpg",
@@ -33,6 +35,14 @@ const SLIDESHOW_IMAGES = [
 const ImageSlideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % SLIDESHOW_IMAGES.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + SLIDESHOW_IMAGES.length) % SLIDESHOW_IMAGES.length);
+  };
 
   useEffect(() => {
     setLoaded(true);
@@ -70,6 +80,27 @@ const ImageSlideshow = () => {
         
         {/* Glow border effect */}
         <div className="absolute inset-0 border border-primary/30 rounded-2xl animate-lusion-glow" />
+        
+        {/* Mobile Navigation Buttons */}
+        <Button
+          onClick={prevImage}
+          variant="ghost"
+          size="icon"
+          className="absolute left-2 top-1/2 -translate-y-1/2 md:hidden bg-black/30 hover:bg-black/50 text-white border-0 w-10 h-10 z-10"
+          aria-label="Previous image"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </Button>
+        
+        <Button
+          onClick={nextImage}
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-1/2 -translate-y-1/2 md:hidden bg-black/30 hover:bg-black/50 text-white border-0 w-10 h-10 z-10"
+          aria-label="Next image"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </Button>
       </div>
       
       {/* Floating particles around slideshow */}

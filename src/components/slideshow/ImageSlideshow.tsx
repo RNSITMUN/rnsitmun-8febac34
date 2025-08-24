@@ -4,10 +4,11 @@ import { Button } from "../ui/button";
 
 const SLIDESHOW_IMAGES = [
   "/slideshow/inaugration (1).jpg",
-  "/slideshow/inaugration (2).jpg",
+  "/slideshow/inaugration (2).jpg", 
   "/slideshow/inaugration (3).jpg",
   "/slideshow/inaugration (4).jpg",
   "/slideshow/unicon_24.jpg",
+  "/slideshow/nexus_24.jpg",
   "/slideshow/nexus_24 (2).jpg",
   "/slideshow/nexus_24 (3).jpg",
   "/slideshow/nexus_24 (4).jpg",
@@ -16,19 +17,18 @@ const SLIDESHOW_IMAGES = [
   "/slideshow/nexus_24 (7).jpg",
   "/slideshow/nexus_24 (8).jpg",
   "/slideshow/nexus_24 (9).jpg",
-  "/slideshow/nexus_24.jpg",
   "/slideshow/atlas_24.JPG",
-  "/slideshow/atlas_24 (1).JPG",
+  "/slideshow/atlas_24 (1).JPG", 
   "/slideshow/atlas_24 (2).JPG",
   "/slideshow/atlas_24 .JPG",
+  "/slideshow/unicon_25.jpg",
   "/slideshow/unicon_25 (2).jpg",
   "/slideshow/unicon_25 (3).jpg",
-  "/slideshow/unicon_25.jpg",
+  "/slideshow/nexus_25.jpg",
   "/slideshow/nexus_25 (2).jpg",
   "/slideshow/nexus_25 (3).jpg",
   "/slideshow/nexus_25 (4).jpg",
-  "/slideshow/nexus_25 (5).jpg",
-  "/slideshow/nexus_25.jpg"
+  "/slideshow/nexus_25 (5).jpg"
 ];
 
 
@@ -68,9 +68,13 @@ const ImageSlideshow = () => {
           >
             <img
               src={image}
-              alt={`Professional MUN scene ${index + 1}`}
+              alt={`RNSIT MUN ${image.includes('inauguration') ? 'inauguration ceremony' : image.includes('unicon') ? 'UNICON conference' : image.includes('nexus') ? 'NEXUS event' : image.includes('atlas') ? 'ATLAS conference' : 'Model United Nations event'} at RNS Institute of Technology`}
               className="w-full h-full object-cover"
               loading={index === 0 ? "eager" : "lazy"}
+              onError={(e) => {
+                console.warn(`Failed to load image: ${image}`);
+                e.currentTarget.style.display = 'none';
+              }}
             />
           </div>
         ))}

@@ -213,6 +213,12 @@
     .social-icon-lusion {
       @apply p-3 min-h-[48px] min-w-[48px];
     }
+    
+    /* Fix viewport height on mobile browsers */
+    .min-h-\[100svh\] {
+      min-height: 100vh;
+      min-height: 100svh;
+    }
   }
 }
 

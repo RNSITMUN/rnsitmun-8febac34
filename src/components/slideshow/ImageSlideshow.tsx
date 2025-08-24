@@ -68,13 +68,19 @@ const ImageSlideshow = () => {
           >
             <img
               src={image}
-              alt={`RNSIT MUN ${image.includes('inauguration') ? 'inauguration ceremony' : image.includes('unicon') ? 'UNICON conference' : image.includes('nexus') ? 'NEXUS event' : image.includes('atlas') ? 'ATLAS conference' : 'Model United Nations event'} at RNS Institute of Technology`}
+              alt={`RNSIT MUN ${image.includes('inaugration') ? 'inauguration ceremony' : image.includes('unicon') ? 'UNICON conference' : image.includes('nexus') ? 'NEXUS event' : image.includes('atlas') ? 'ATLAS conference' : 'Model United Nations event'} at RNS Institute of Technology`}
               className="w-full h-full object-cover"
               loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "low"}
+              onLoad={(e) => {
+                e.currentTarget.style.opacity = '1';
+              }}
               onError={(e) => {
                 console.warn(`Failed to load image: ${image}`);
                 e.currentTarget.style.display = 'none';
               }}
+              style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
             />
           </div>
         ))}

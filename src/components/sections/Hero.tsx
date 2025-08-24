@@ -13,7 +13,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
+    <section className="relative min-h-[100svh] md:min-h-screen flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/10" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">

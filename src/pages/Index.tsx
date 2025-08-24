@@ -1,6 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
+import LocalSEOSection from "@/components/sections/LocalSEOSection";
 import AISearchBar from "@/components/search/AISearchBar";
 
 
@@ -9,6 +10,7 @@ const Index = () => {
     <Layout>
       <HeroSection />
       <AboutSection />
+      <LocalSEOSection />
       
       {/* Enhanced AI Search Section */}
       <section className="py-10 sm:py-16 lg:py-28 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-visible">

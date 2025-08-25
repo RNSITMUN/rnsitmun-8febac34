@@ -64,7 +64,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 font-inter leading-relaxed font-medium">
-              Welcome to <strong>RNSIT MUN</strong>, the official <strong>Model United Nations society</strong> at <strong>RNS Institute of Technology, Bangalore</strong>. Join our premier MUN program for diplomatic training, international relations experience, and global policy discussions.
+              Welcome to <strong>RNSIT MUN</strong>, the official <strong>Model United Nations society</strong> at <strong>RNS Institute of Technology, Bangalore</strong>. Join our MUN program for diplomatic training, international relations experience, and global policy discussions.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-center lg:justify-start">

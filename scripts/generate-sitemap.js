@@ -5,8 +5,12 @@
  * This script runs during build to ensure the sitemap always has the latest date
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const BASE_URL = 'https://rnsitmun.vercel.app';
 const OUTPUT_PATH = path.join(__dirname, '../public/sitemap.xml');
@@ -100,7 +104,7 @@ function generateSitemap() {
 }
 
 // Only run if called directly (not imported)
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   try {
     generateSitemap();
     process.exit(0);
@@ -110,4 +114,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { generateSitemap };
+export { generateSitemap };

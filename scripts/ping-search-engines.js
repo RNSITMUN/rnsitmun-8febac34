@@ -5,7 +5,7 @@
  * This script notifies search engines about sitemap updates
  */
 
-const https = require('https');
+import https from 'https';
 
 const SITEMAP_URL = 'https://rnsitmun.vercel.app/sitemap.xml';
 
@@ -89,7 +89,7 @@ async function pingAllSearchEngines() {
 }
 
 // Only run if called directly (not imported)
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   pingAllSearchEngines()
     .then(() => {
       process.exit(0);
@@ -100,4 +100,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { pingAllSearchEngines };
+export { pingAllSearchEngines };

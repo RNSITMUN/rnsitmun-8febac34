@@ -5,8 +5,8 @@
  * Handles sitemap generation and search engine notifications
  */
 
-const { generateSitemap } = require('./generate-sitemap');
-const { pingAllSearchEngines } = require('./ping-search-engines');
+import { generateSitemap } from './generate-sitemap.js';
+import { pingAllSearchEngines } from './ping-search-engines.js';
 
 async function postBuild() {
   console.log('🚀 Starting post-build process for RNSIT MUN...\n');
@@ -31,8 +31,8 @@ async function postBuild() {
 }
 
 // Only run if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   postBuild();
 }
 
-module.exports = { postBuild };
+export { postBuild };

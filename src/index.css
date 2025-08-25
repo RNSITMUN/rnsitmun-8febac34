@@ -91,6 +91,14 @@
     @apply border-border;
   }
 
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: hsl(var(--background));
+  }
+
   body {
     @apply bg-background text-foreground font-inter antialiased;
     font-feature-settings: "cv11", "ss01";
@@ -99,6 +107,19 @@
 
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Fix for mobile Chrome desktop site spacing */
+  .main-container {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* Replace 100vh with 100dvh for better mobile support */
+  .min-h-screen {
+    min-height: 100dvh;
   }
 }
 

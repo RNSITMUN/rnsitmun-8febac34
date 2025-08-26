@@ -104,6 +104,18 @@ export default {
 				'lusion-float': {
 					'0%, 100%': { transform: 'translateY(0px)' },
 					'50%': { transform: 'translateY(-10px)' }
+				},
+				'shimmer': {
+					'100%': { transform: 'translateX(50%)' }
+				},
+				'sparkle': {
+					'0%, 100%': { opacity: '0', transform: 'scale(0.5)' },
+					'50%': { opacity: '1', transform: 'scale(1.2)' }
+				},
+				'steam': {
+					'0%': { opacity: '0', transform: 'translateY(0) scaleX(1)' },
+					'50%': { opacity: '0.6', transform: 'translateY(-20px) scaleX(1.2)' },
+					'100%': { opacity: '0', transform: 'translateY(-40px) scaleX(0.8)' }
 				}
 			},
 			animation: {
@@ -111,7 +123,10 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'lusion-pulse': 'lusion-pulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
 				'lusion-glow': 'lusion-glow 3s ease-in-out infinite',
-				'lusion-float': 'lusion-float 6s ease-in-out infinite'
+				'lusion-float': 'lusion-float 6s ease-in-out infinite',
+				'shimmer': 'shimmer 2s infinite linear',
+				'sparkle': 'sparkle 2s infinite ease-in-out',
+				'steam': 'steam 3s infinite ease-in-out'
 			}
 		}
 	},

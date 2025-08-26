@@ -15,114 +15,125 @@ const NotFound = () => {
 
   return (
     <Layout>
-      <div className="min-h-[70dvh] flex items-center justify-center bg-gradient-to-b from-orange-50 to-yellow-100/50">
-        <div className="text-center p-6 sm:p-10 max-w-2xl">
-          {/* Illustration container */}
-          <div className="mx-auto mb-6 w-[18rem] sm:w-[22rem] relative">
+      <div className="min-h-[90dvh] flex items-center justify-center bg-black">
+        <div className="flex flex-col items-center text-center p-6 sm:p-10 max-w-2xl bg-[#050C28] rounded-3xl shadow-2xl">
+          {/* Cartoon Filter Coffee SVG */}
+          <div className="mx-auto mb-6 w-[14rem] sm:w-[18rem] relative">
             <svg
-              viewBox="0 0 520 420"
-              className="w-full h-auto drop-shadow-2xl"
+              viewBox="0 0 300 400"
+              className="w-full h-auto drop-shadow-xl"
               role="img"
-              aria-labelledby="thali404Title thali404Desc"
+              aria-labelledby="coffee404Title coffee404Desc"
             >
-              <title id="thali404Title">404 Thali — Bisibelebath missing</title>
-              <desc id="thali404Desc">
-                A thali with bowls of food. The bisibelebath bowl is empty, symbolising a 404 page.
+              <title id="coffee404Title">404 Filter Coffee</title>
+              <desc id="coffee404Desc">
+                Cartoon steel tumbler with frothy filter coffee in a dabara.
               </desc>
 
               <defs>
-                <radialGradient id="plate" cx="50%" cy="45%" r="75%">
-                  <stop offset="0%" stopColor="#fffaf0" />
-                  <stop offset="100%" stopColor="#f1e6cf" />
-                </radialGradient>
                 <linearGradient id="steel" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#cfcfcf" />
-                  <stop offset="100%" stopColor="#f6f6f6" />
+                  <stop offset="0%" stopColor="#9ca3af" />
+                  <stop offset="100%" stopColor="#f3f4f6" />
                 </linearGradient>
-                <linearGradient id="sambar" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#ffb56b" />
-                  <stop offset="100%" stopColor="#ff7a2e" />
-                </linearGradient>
-                <linearGradient id="chutney" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#b7f0a5" />
-                  <stop offset="100%" stopColor="#56c35a" />
-                </linearGradient>
-                <linearGradient id="curd" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#ffffff" />
-                  <stop offset="100%" stopColor="#eef3ff" />
+                <radialGradient id="coffee" cx="50%" cy="40%" r="65%">
+                  <stop offset="0%" stopColor="#d97706" />
+                  <stop offset="100%" stopColor="#92400e" />
+                </radialGradient>
+                <linearGradient id="froth" x1="0" x2="1">
+                  <stop offset="0%" stopColor="#fff" />
+                  <stop offset="100%" stopColor="#f5f5dc" />
                 </linearGradient>
               </defs>
 
-              {/* Plate */}
-              <ellipse cx="260" cy="210" rx="240" ry="165" fill="url(#steel)" />
-              <ellipse cx="260" cy="210" rx="220" ry="150" fill="url(#plate)" />
+              {/* Dabara (base plate) */}
+              <ellipse cx="150" cy="340" rx="120" ry="40" fill="url(#steel)" />
+              <ellipse
+                cx="150"
+                cy="340"
+                rx="115"
+                ry="35"
+                fill="#0f172a"
+                opacity="0.4"
+              />
 
-              {/* Bowls */}
-              <g transform="translate(110,135)">
-                <ellipse rx="70" ry="45" fill="url(#steel)" />
-                <ellipse rx="62" ry="38" cy="-5" fill="url(#sambar)" />
-              </g>
+              {/* Tumbler body */}
+              <rect
+                x="95"
+                y="140"
+                width="110"
+                height="170"
+                rx="20"
+                fill="url(#steel)"
+                stroke="#6b7280"
+                strokeWidth="4"
+              />
 
-              <g transform="translate(260,110)">
-                <ellipse rx="65" ry="42" fill="url(#steel)" />
-                <ellipse rx="57" ry="34" cy="-4" fill="url(#chutney)" />
-              </g>
+              {/* Coffee inside */}
+              <ellipse cx="150" cy="140" rx="55" ry="25" fill="url(#coffee)" />
 
-              <g transform="translate(380,150)">
-                <ellipse rx="60" ry="40" fill="url(#steel)" />
-                <ellipse rx="52" ry="32" cy="-4" fill="url(#curd)" />
-              </g>
-
-              {/* Idli + Vada */}
-              <g transform="translate(180,250)">
-                <ellipse rx="48" ry="33" fill="#ffffff" stroke="#e6e6e6" strokeWidth="3" />
-                <g transform="translate(105,10)">
-                  <ellipse rx="35" ry="25" fill="#f2b174" stroke="#e78933" strokeWidth="3" />
-                  <ellipse rx="12" ry="8" fill="#d67c2b" />
-                </g>
-              </g>
-
-              {/* BISIBELEBATH BOWL — EMPTY */}
-              <g transform="translate(330,260)">
-                <ellipse rx="75" ry="48" fill="url(#steel)" />
-                <ellipse rx="65" ry="40" cy="-6" fill="#f7f0da" stroke="#e0cfaa" strokeWidth="2" />
-              </g>
+              {/* Frothy top */}
+              <ellipse
+                cx="150"
+                cy="135"
+                rx="55"
+                ry="20"
+                fill="url(#froth)"
+                className="animate-shimmer"
+              />
             </svg>
 
-            {/* Shimmer overlay */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-full">
-              <div className="absolute -left-1/2 top-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+            {/* Shimmer overlay for froth */}
+            <div className="absolute top-[16%] left-0 right-0 h-6 overflow-hidden">
+              <div className="absolute -left-1/2 top-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
             </div>
 
             {/* Sparkles */}
             <div className="absolute inset-0 pointer-events-none">
-              <span className="absolute top-[20%] left-[30%] w-2 h-2 bg-white rounded-full animate-sparkle"></span>
-              <span className="absolute bottom-[25%] right-[35%] w-2 h-2 bg-white rounded-full animate-sparkle delay-500"></span>
-              <span className="absolute top-[50%] right-[20%] w-2 h-2 bg-white rounded-full animate-sparkle delay-1000"></span>
+              <span className="absolute top-[30%] left-[20%] w-2 h-2 bg-white rounded-full animate-sparkle"></span>
+              <span className="absolute bottom-[35%] right-[30%] w-2 h-2 bg-white rounded-full animate-sparkle delay-500"></span>
             </div>
 
             {/* Steam rising */}
-            <div className="absolute left-1/2 top-[42%] -translate-x-1/2">
+            <div className="absolute left-1/2 top-[8%] -translate-x-1/2">
               <div className="flex flex-col items-center space-y-1">
-                <span className="block w-2 h-6 bg-gradient-to-b from-orange-400/80 to-transparent rounded-full animate-steam"></span>
-                <span className="block w-2 h-6 bg-gradient-to-b from-orange-400/70 to-transparent rounded-full animate-steam delay-150"></span>
-                <span className="block w-2 h-6 bg-gradient-to-b from-orange-400/60 to-transparent rounded-full animate-steam delay-300"></span>
+                <span className="block w-2 h-8 bg-gradient-to-b from-white/60 to-transparent rounded-full animate-steam"></span>
+                <span className="block w-2 h-8 bg-gradient-to-b from-white/40 to-transparent rounded-full animate-steam delay-150"></span>
               </div>
             </div>
           </div>
 
+          {/* Big 404 */}
+          <h1 className="text-5xl sm:text-6xl font-bold text-white mb-2 animate-bounce">
+            404
+          </h1>
+
           {/* Tagline */}
-          <h2 className="text-2xl sm:text-3xl font-semibold text-orange-900 mb-3">
-            Your thali is incomplete — Bisibelebath is missing!
-          </h2>
-          <p className="text-gray-600 mb-6">
-            The page you're looking for isn't served here. Let's head back before the idlis get cold!
+          <p className="text-xl sm:text-2xl text-gray-200 mb-1">
+            Page not found — like{" "}
+            <span className="font-semibold text-orange-400">
+              filter coffee without decoction ☕
+            </span>
+          </p>
+          <p className="text-sm sm:text-base text-gray-400 mb-6">
+            The link you brewed doesn't exist. Let's get back before the froth settles!
           </p>
 
-          {/* CTA */}
-          <Button asChild className="rounded-2xl bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 shadow-md">
-            <Link to="/">Return to Home</Link>
-          </Button>
+          {/* Actions */}
+          <div className="flex items-center justify-center gap-3">
+            <Button
+              asChild
+              className="bg-orange-600 hover:bg-orange-700 rounded-2xl transition-transform duration-300 hover:scale-105"
+            >
+              <Link to="/">Return to Home</Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="border-gray-400 text-gray-200 hover:bg-gray-800 rounded-2xl transition-transform duration-300 hover:scale-105"
+            >
+              <Link to="/events">See Events</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </Layout>

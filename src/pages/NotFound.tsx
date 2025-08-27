@@ -151,7 +151,7 @@ const NotFound = () => {
             <h2
               className="text-3xl font-bold"
               style={{
-                background: 'linear-gradient(to right, #050C28, #0A1654)',
+                background: 'linear-gradient(to right, #2563EB, #06B6D4)', // bright blue → cyan
                 WebkitBackgroundClip: 'text',
                 color: 'transparent'
               }}
@@ -179,37 +179,49 @@ const NotFound = () => {
             
             <Link 
               to="/events"
-              className="relative bg-transparent text-white hover:text-black font-bold px-10 py-4 rounded-2xl transform transition-all duration-300 hover:scale-110 hover:shadow-lg border-2 hover:bg-[#050C28]" 
-              style={{borderColor: '#050C28'}}
+              className="relative text-white font-bold px-10 py-4 rounded-2xl transform transition-all duration-300 hover:scale-110 hover:shadow-xl overflow-hidden"
+              style={{
+                background: 'linear-gradient(to right, #2563EB, #06B6D4)', // bright gradient for visibility
+                border: 'none'
+              }}
             >
               Browse Events
             </Link>
           </div>
 
           {/* Random Bengaluru facts */}
-          <div className="p-6 rounded-xl border backdrop-blur-sm max-w-lg" style={{background: 'linear-gradient(to right, rgba(5, 12, 40, 0.2), rgba(10, 22, 84, 0.2))', borderColor: 'rgba(5, 12, 40, 0.5)'}}>
+          <div
+            className="p-6 rounded-xl border backdrop-blur-sm max-w-lg"
+            style={{
+              background: 'linear-gradient(to right, rgba(5, 12, 40, 0.2), rgba(10, 22, 84, 0.2))',
+              borderColor: 'rgba(5, 12, 40, 0.5)'
+            }}
+          >
             <RandomBengaluruFact />
           </div>
         </div>
 
         {/* Animations */}
         <style>{`
-          @keyframes float { 
-            0%,100%{transform:translateY(0) translateX(0) rotate(0);opacity:.7}
-            33%{transform:translateY(-15px) translateX(5px) rotate(120deg);opacity:1}
-            66%{transform:translateY(-5px) translateX(-5px) rotate(240deg);opacity:.8}
+          @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0); opacity: 0.7; }
+            33% { transform: translateY(-15px) translateX(5px) rotate(120deg); opacity: 1; }
+            66% { transform: translateY(-5px) translateX(-5px) rotate(240deg); opacity: 0.8; }
           }
-          .animate-float{animation:float 6s ease-in-out infinite}
-          @keyframes gentle-bounce{
-            0%,100%{transform:translateY(0) scale(1)}
-            50%{transform:translateY(-8px) scale(1.02)}
+          .animate-float { animation: float 6s ease-in-out infinite; }
+
+          @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
           }
-          .animate-gentle-bounce{animation:gentle-bounce 5s ease-in-out infinite}
-          @keyframes glow{
-            0%,100%{opacity:.3;transform:scale(.95)}
-            50%{opacity:.7;transform:scale(1.05)}
+          .animate-gentle-bounce { animation: gentle-bounce 5s ease-in-out infinite; }
+
+          @keyframes glow {
+            0%, 100% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 0.7; transform: scale(1.05); }
           }
-          .animate-glow{animation:glow 4s ease-in-out infinite}
+          .animate-glow { animation: glow 4s ease-in-out infinite; }
+          
           @keyframes shimmer {
             0% { transform: translateX(-100%); opacity: 0.7; }
             100% { transform: translateX(100%); opacity: 0; }

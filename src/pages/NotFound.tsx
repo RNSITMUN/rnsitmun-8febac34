@@ -1,22 +1,88 @@
-import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
 
-const NotFound = () => {
-  const location = useLocation();
+const RandomBengaluruFact = () => {
+  const [currentFact, setCurrentFact] = useState(0);
+
+  const facts = [
+    {
+      icon: "🚗",
+      title: "Traffic Fact:",
+      text: "Bengaluru has more traffic signals per km than any other Indian city. Perfect time to think about life... or plan your next startup!"
+    },
+    {
+      icon: "🌧️",
+      title: "Weather Fact:",
+      text: "Bengaluru's weather is so perfect, people from other cities visit just to experience what 'pleasant' feels like!"
+    },
+    {
+      icon: "🏢",
+      title: "Tech Fact:",
+      text: "Every 3rd software engineer in India either works in Bengaluru or dreams of moving here. The other 2 are planning their exit strategy!"
+    },
+    {
+      icon: "🌳",
+      title: "Garden City Fact:",
+      text: "Bengaluru was once called the 'Garden City' with over 1000 lakes. Now we have 1000 startups per lake!"
+    },
+    {
+      icon: "🍛",
+      title: "Food Fact:",
+      text: "Bengaluru has the highest concentration of South Indian breakfast joints. Dosa availability: 99.9% uptime!"
+    },
+    {
+      icon: "🏠",
+      title: "PG Life Fact:",
+      text: "Bengaluru probably has more PGs than any other city. It's like a giant hostel where everyone codes and orders food!"
+    }
+  ];
 
   useEffect(() => {
-    console.error("404:", location.pathname);
-  }, [location.pathname]);
+    const interval = setInterval(() => {
+      setCurrentFact((prev) => (prev + 1) % facts.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
+    <div className="transition-all duration-1000 ease-in-out">
+      <p className="text-blue-200 text-sm leading-relaxed">
+        <span className="text-white font-semibold">
+          {facts[currentFact].icon} {facts[currentFact].title}
+        </span>{' '}
+        {facts[currentFact].text}
+      </p>
+    </div>
+  );
+};
+
+const NotFound = () => {
+  return (
     <Layout>
-      <div className="min-h-screen flex items-center justify-center bg-black p-6">
-        <div className="flex flex-col items-center text-center max-w-xl w-full">
+      <div className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden">
+        
+        {/* Floating particles */}
+        <div className="absolute inset-0 opacity-25">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 rounded-full animate-float"
+              style={{
+                backgroundColor: '#050C28',
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 8}s`,
+                animationDuration: `${4 + Math.random() * 4}s`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center text-center max-w-2xl w-full relative z-10">
           
-          {/* Curvy blob background */}
-          <div className="relative w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem]">
+          {/* Main coffee illustration */}
+          <div className="relative w-96 h-96 mb-8">
             <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full">
               <path
                 d="M80,60 Q200,0 320,60 Q380,120 340,240 Q300,360 180,360 Q60,360 40,240 Q20,120 80,60Z"
@@ -64,59 +130,103 @@ const NotFound = () => {
                   ))}
                 </div>
               </div>
-
-              {/* 404 text */}
-              <h1 className="text-6xl font-extrabold text-white mt-6 animate-bounce-slow">
-                404
-              </h1>
             </div>
           </div>
 
-          {/* Tagline */}
-          <p className="text-gray-200 mt-6 text-lg">
-            Page not found — like <span className="text-orange-400 font-semibold">filter coffee without decoction</span> ☕
-          </p>
-          <p className="text-gray-400 mt-2">
-            The link you brewed doesn't exist. Let's get back before the froth settles!
-          </p>
+          {/* 404 with navy blue glow */}
+          <div className="relative mb-8">
+            <h1 className="text-9xl font-black text-white relative z-10 animate-gentle-bounce">
+              4<span className="text-white drop-shadow-lg">0</span>4
+            </h1>
+            <div
+              className="absolute inset-0 text-9xl font-black blur-lg opacity-60 animate-glow"
+              style={{ color: '#050C28' }}
+            >
+              404
+            </div>
+          </div>
 
-          {/* CTA */}
-          <div className="mt-6 flex gap-4">
-            <Button asChild className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-xl">
-              <Link to="/">Return Home</Link>
-            </Button>
-            <Button asChild className="bg-black border border-white text-white px-6 py-2 rounded-xl">
-              <Link to="/events">See Events</Link>
-            </Button>
+          {/* Bengaluru-style messaging */}
+          <div className="space-y-4 mb-10">
+            <h2
+              className="text-3xl font-bold"
+              style={{
+                background: 'linear-gradient(to right, #050C28, #0A1654)',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent'
+              }}
+            >
+              Aiyooo! Wrong Route-u!
+            </h2>
+            <p className="text-gray-300 text-xl leading-relaxed">
+              Page not found — like <span className="text-orange-400 font-semibold">filter coffee without decoction</span> ☕
+            </p>
+            <p className="text-gray-400">
+              The link you brewed doesn't exist. Let's get back before the froth settles!
+            </p>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 mb-8">
+            <Link 
+              to="/"
+              className="group relative text-white font-bold px-10 py-4 rounded-2xl transform transition-all duration-300 hover:scale-110 hover:shadow-2xl overflow-hidden" 
+              style={{background: 'linear-gradient(to right, #050C28, #0A1654)'}}
+            >
+              <span className="relative z-10">Back to Home</span>
+              <div className="absolute inset-0 transform translate-x-full group-hover:translate-x-0 transition-transform duration-300" style={{background: 'linear-gradient(to right, #0A1654, #050C28)'}}></div>
+            </Link>
+            
+            <Link 
+              to="/events"
+              className="relative bg-transparent text-white hover:text-black font-bold px-10 py-4 rounded-2xl transform transition-all duration-300 hover:scale-110 hover:shadow-lg border-2 hover:bg-[#050C28]" 
+              style={{borderColor: '#050C28'}}
+            >
+              Browse Events
+            </Link>
+          </div>
+
+          {/* Random Bengaluru facts */}
+          <div className="p-6 rounded-xl border backdrop-blur-sm max-w-lg" style={{background: 'linear-gradient(to right, rgba(5, 12, 40, 0.2), rgba(10, 22, 84, 0.2))', borderColor: 'rgba(5, 12, 40, 0.5)'}}>
+            <RandomBengaluruFact />
           </div>
         </div>
-      </div>
 
-      {/* Animations */}
-      <style>{`
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); opacity: 0.7; }
-          100% { transform: translateX(100%); opacity: 0; }
-        }
-        .animate-shimmer {
-          animation: shimmer 3s infinite linear;
-        }
-        @keyframes steam {
-          0% { transform: translateY(0); opacity: 0.5; }
-          50% { transform: translateY(-15px); opacity: 0.3; }
-          100% { transform: translateY(-30px); opacity: 0; }
-        }
-        .animate-steam {
-          animation: steam 3s infinite ease-in-out;
-        }
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s infinite;
-        }
-      `}</style>
+        {/* Animations */}
+        <style>{`
+          @keyframes float { 
+            0%,100%{transform:translateY(0) translateX(0) rotate(0);opacity:.7}
+            33%{transform:translateY(-15px) translateX(5px) rotate(120deg);opacity:1}
+            66%{transform:translateY(-5px) translateX(-5px) rotate(240deg);opacity:.8}
+          }
+          .animate-float{animation:float 6s ease-in-out infinite}
+          @keyframes gentle-bounce{
+            0%,100%{transform:translateY(0) scale(1)}
+            50%{transform:translateY(-8px) scale(1.02)}
+          }
+          .animate-gentle-bounce{animation:gentle-bounce 5s ease-in-out infinite}
+          @keyframes glow{
+            0%,100%{opacity:.3;transform:scale(.95)}
+            50%{opacity:.7;transform:scale(1.05)}
+          }
+          .animate-glow{animation:glow 4s ease-in-out infinite}
+          @keyframes shimmer {
+            0% { transform: translateX(-100%); opacity: 0.7; }
+            100% { transform: translateX(100%); opacity: 0; }
+          }
+          .animate-shimmer {
+            animation: shimmer 3s infinite linear;
+          }
+          @keyframes steam {
+            0% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-15px); opacity: 0.3; }
+            100% { transform: translateY(-30px); opacity: 0; }
+          }
+          .animate-steam {
+            animation: steam 3s infinite ease-in-out;
+          }
+        `}</style>
+      </div>
     </Layout>
   );
 };

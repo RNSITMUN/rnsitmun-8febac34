@@ -81,57 +81,111 @@ const NotFound = () => {
 
         <div className="flex flex-col items-center text-center max-w-2xl w-full relative z-10">
           
-          {/* Main coffee illustration */}
-          <div className="relative w-96 h-96 mb-8">
-            <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full">
-              <path
-                d="M80,60 Q200,0 320,60 Q380,120 340,240 Q300,360 180,360 Q60,360 40,240 Q20,120 80,60Z"
-                fill="#050C28"
-              />
-            </svg>
-
-            {/* Cartoon filter coffee */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="relative w-36 h-44">
-                <svg viewBox="0 0 120 160" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="metal" x1="0" x2="1">
-                      <stop offset="0%" stopColor="#a1a1aa" />
-                      <stop offset="100%" stopColor="#f4f4f5" />
-                    </linearGradient>
-                    <radialGradient id="coffee" cx="50%" cy="30%" r="60%">
-                      <stop offset="0%" stopColor="#b45309" />
-                      <stop offset="100%" stopColor="#78350f" />
-                    </radialGradient>
-                    <radialGradient id="froth" cx="50%" cy="25%" r="65%">
-                      <stop offset="0%" stopColor="#fff9db" />
-                      <stop offset="100%" stopColor="#fef3c7" />
-                    </radialGradient>
-                  </defs>
-
-                  {/* Dabara */}
-                  <ellipse cx="60" cy="145" rx="50" ry="12" fill="url(#metal)" />
-                  {/* Tumbler */}
-                  <rect x="35" y="50" width="50" height="90" rx="10" fill="url(#metal)" />
-                  {/* Coffee */}
-                  <ellipse cx="60" cy="50" rx="40" ry="15" fill="url(#coffee)" />
-                  {/* Froth */}
-                  <ellipse cx="60" cy="47" rx="40" ry="12" fill="url(#froth)" className="animate-shimmer" />
-                </svg>
-
-                {/* Steam */}
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 flex space-x-2">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <span
-                      key={i}
-                      className="block w-1 h-10 bg-gradient-to-b from-white/50 to-transparent rounded-full animate-steam"
-                      style={{ animationDelay: `${i * 0.6}s` }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Enhanced coffee illustration matching the reference */}
+        <div className="relative w-96 h-96 mb-8 flex flex-col items-center justify-center">
+          <svg width="320" height="280" viewBox="0 0 320 280" className="drop-shadow-2xl">
+            <defs>
+              <linearGradient id="filterGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#fbbf24"/>
+                <stop offset="30%" stopColor="#f59e0b"/>
+                <stop offset="70%" stopColor="#d97706"/>
+                <stop offset="100%" stopColor="#b45309"/>
+              </linearGradient>
+              <linearGradient id="steelFinish" x1="20%" y1="0%" x2="80%" y2="100%">
+                <stop offset="0%" stopColor="#f1f5f9"/>
+                <stop offset="20%" stopColor="#e2e8f0"/>
+                <stop offset="50%" stopColor="#cbd5e1"/>
+                <stop offset="80%" stopColor="#94a3b8"/>
+                <stop offset="100%" stopColor="#64748b"/>
+              </linearGradient>
+              <radialGradient id="coffeeGradient" cx="50%" cy="20%">
+                <stop offset="0%" stopColor="#a16207"/>
+                <stop offset="50%" stopColor="#92400e"/>
+                <stop offset="100%" stopColor="#451a03"/>
+              </radialGradient>
+              <radialGradient id="coffeeLight" cx="30%" cy="20%">
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.8"/>
+                <stop offset="100%" stopColor="#92400e" stopOpacity="0.3"/>
+              </radialGradient>
+              <filter id="softGlow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge> 
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            
+            {/* Main filter container */}
+            <ellipse cx="160" cy="50" rx="120" ry="20" 
+                     fill="url(#filterGold)" stroke="#92400e" strokeWidth="2"/>
+            <rect x="40" y="30" width="240" height="40" 
+                  fill="url(#filterGold)" stroke="#92400e" strokeWidth="2"/>
+            
+            {/* Inner filter mesh */}
+            <rect x="50" y="40" width="220" height="20" 
+                  fill="#451a03"/>
+            
+            {/* Filter holes in a more authentic pattern */}
+            {Array.from({length: 80}).map((_, i) => {
+              const row = Math.floor(i / 16);
+              const col = i % 16;
+              return (
+                <circle key={i} 
+                        cx={60 + col * 12.5} 
+                        cy={45 + row * 4} 
+                        r="1.2" fill="#92400e" opacity="0.8"/>
+              );
+            })}
+            
+            {/* Handle */}
+            <path d="M285 50 Q310 45 315 50 Q315 60 310 65 Q285 60 285 50" 
+                  stroke="url(#filterGold)" strokeWidth="4" fill="none" strokeLinecap="round"/>
+            
+            {/* Coffee dripping streams */}
+            {Array.from({length: 12}).map((_, i) => (
+              <rect key={i} x={70 + i * 15} y="75" width="2" height="35" 
+                    fill="url(#coffeeGradient)" rx="1" 
+                    className="animate-pulse"
+                    style={{
+                      animationDelay: `${i * 0.1}s`,
+                      animationDuration: '2s'
+                    }}/>
+            ))}
+            
+            {/* Steel tumbler/glass */}
+            <rect x="100" y="120" width="120" height="140" rx="8" 
+                  fill="url(#steelFinish)" stroke="#64748b" strokeWidth="2"/>
+            
+            {/* Coffee liquid */}
+            <rect x="105" y="180" width="110" height="75" 
+                  fill="url(#coffeeGradient)"/>
+            
+            {/* Coffee foam/froth layer */}
+            <ellipse cx="160" cy="180" rx="55" ry="8" 
+                     fill="url(#coffeeLight)" 
+                     className="animate-pulse" style={{animationDuration: '3s'}}/>
+            
+            {/* Glass highlights */}
+            <rect x="105" y="125" width="6" height="125" rx="3" 
+                  fill="rgba(255,255,255,0.4)"/>
+            <rect x="209" y="125" width="6" height="125" rx="3" 
+                  fill="rgba(255,255,255,0.2)"/>
+            
+            {/* Steam rising */}
+            {Array.from({length: 6}).map((_, i) => (
+              <path key={i}
+                    d={`M${140 + i * 8} 115 Q${145 + i * 8} 90 ${135 + i * 8} 65 Q${150 + i * 8} 40 ${140 + i * 8} 15`}
+                    stroke="rgba(255,255,255,0.5)" strokeWidth="2" fill="none"
+                    strokeLinecap="round" filter="url(#softGlow)"
+                    className="animate-pulse"
+                    style={{
+                      animationDelay: `${i * 0.5}s`, 
+                      animationDuration: '3s'
+                    }}/>
+            ))}
+          </svg>
+        </div>
 
           {/* 404 with navy blue glow */}
           <div className="relative mb-8">

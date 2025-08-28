@@ -8,32 +8,32 @@ const RandomBengaluruFact = () => {
   const facts = [
     {
       icon: "🚗",
-      title: "Traffic Fact:",
+      title: "Fact:",
       text: "Bengaluru has more traffic signals per km than any other Indian city. Perfect time to think about life... or plan your next startup!"
     },
     {
       icon: "🌧️",
-      title: "Weather Fact:",
+      title: "Fact:",
       text: "Bengaluru's weather is so perfect, people from other cities visit just to experience what 'pleasant' feels like!"
     },
     {
       icon: "🏢",
-      title: "Tech Fact:",
+      title: "Fact:",
       text: "Every 3rd software engineer in India either works in Bengaluru or dreams of moving here. The other 2 are planning their exit strategy!"
     },
     {
       icon: "🌳",
-      title: "Garden City Fact:",
+      title: "Fact:",
       text: "Bengaluru was once called the 'Garden City' with over 1000 lakes. Now we have 1000 startups per lake!"
     },
     {
       icon: "🍛",
-      title: "Food Fact:",
+      title: "Fact:",
       text: "Bengaluru has the highest concentration of South Indian breakfast joints. Dosa availability: 99.9% uptime!"
     },
     {
       icon: "🏠",
-      title: "PG Life Fact:",
+      title: "Fact:",
       text: "Bengaluru probably has more PGs than any other city. It's like a giant hostel where everyone codes and orders food!"
     }
   ];

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 // ✅ Random Fact Component
 const RandomBengaluruFact = () => {
@@ -35,13 +34,18 @@ const RandomBengaluruFact = () => {
 
 // ✅ Navbar Component
 const Navbar = () => {
+  const handleNavigation = (path) => {
+    console.log(`Navigating to: ${path}`);
+    alert(`Navigation to ${path} - In your actual app, this will use React Router!`);
+  };
+  
   return (
     <nav className="w-full fixed top-0 left-0 bg-black bg-opacity-80 text-white py-4 px-6 flex justify-between items-center shadow-md z-50">
       <h1 className="text-xl font-bold">☕ Namma Bengaluru</h1>
       <ul className="flex gap-6">
-        <li className="hover:text-blue-400 cursor-pointer">Home</li>
-        <li className="hover:text-blue-400 cursor-pointer">Events</li>
-        <li className="hover:text-blue-400 cursor-pointer">About</li>
+        <li className="hover:text-blue-400 cursor-pointer transition-colors" onClick={() => handleNavigation("/")}>Home</li>
+        <li className="hover:text-blue-400 cursor-pointer transition-colors" onClick={() => handleNavigation("/events")}>Events</li>
+        <li className="hover:text-blue-400 cursor-pointer transition-colors" onClick={() => handleNavigation("/about")}>About</li>
       </ul>
     </nav>
   );
@@ -58,7 +62,10 @@ const Footer = () => {
 
 // ✅ Main NotFound Page
 const NotFound = () => {
-  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    console.log(`Navigating to: ${path}`);
+    alert(`Navigation to ${path} - In your actual app, this will use React Router navigate("${path}")!`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-black relative overflow-hidden">
@@ -68,11 +75,71 @@ const NotFound = () => {
       {/* Content */}
       <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto flex-grow relative z-10 pt-24 px-6">
         {/* ☕ Authentic Coffee SVG */}
-        {/* (keeping your exact SVG design here without modification) */}
         <div className="relative w-96 h-96 mb-8 flex items-center justify-center">
-          {/* --- your coffee SVG unchanged --- */}
           <svg width="300" height="350" viewBox="0 0 300 350" className="drop-shadow-2xl">
-            {/* defs + shapes (same as you provided) */}
+            <defs>
+              <linearGradient id="coffeeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#6B4423" />
+                <stop offset="50%" stopColor="#8B4513" />
+                <stop offset="100%" stopColor="#4A2C17" />
+              </linearGradient>
+              <linearGradient id="steamGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.2" />
+              </linearGradient>
+              <linearGradient id="saucerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#E8E8E8" />
+                <stop offset="100%" stopColor="#C0C0C0" />
+              </linearGradient>
+            </defs>
+            
+            {/* Saucer */}
+            <ellipse cx="150" cy="280" rx="80" ry="15" fill="url(#saucerGradient)" />
+            <ellipse cx="150" cy="275" rx="80" ry="15" fill="#F0F0F0" />
+            
+            {/* Cup Body */}
+            <path d="M80 180 L80 250 Q80 270 100 270 L200 270 Q220 270 220 250 L220 180 Z" fill="url(#coffeeGradient)" />
+            <ellipse cx="150" cy="180" rx="70" ry="15" fill="#8B4513" />
+            
+            {/* Coffee Surface */}
+            <ellipse cx="150" cy="180" rx="65" ry="12" fill="#3E2723" />
+            
+            {/* Cup Handle */}
+            <path d="M220 200 Q250 200 250 230 Q250 260 220 260" stroke="#8B4513" strokeWidth="8" fill="none" />
+            <path d="M220 205 Q245 205 245 230 Q245 255 220 255" stroke="#A0522D" strokeWidth="4" fill="none" />
+            
+            {/* Steam */}
+            <g opacity="0.7">
+              <path d="M130 160 Q135 140 130 120 Q125 100 135 80" stroke="url(#steamGradient)" strokeWidth="3" fill="none" strokeLinecap="round">
+                <animate attributeName="d" 
+                  values="M130 160 Q135 140 130 120 Q125 100 135 80;M130 160 Q125 140 135 120 Q140 100 130 80;M130 160 Q135 140 130 120 Q125 100 135 80" 
+                  dur="3s" repeatCount="indefinite" />
+              </path>
+              <path d="M150 160 Q145 140 155 120 Q160 100 150 80" stroke="url(#steamGradient)" strokeWidth="3" fill="none" strokeLinecap="round">
+                <animate attributeName="d" 
+                  values="M150 160 Q145 140 155 120 Q160 100 150 80;M150 160 Q160 140 145 120 Q135 100 150 80;M150 160 Q145 140 155 120 Q160 100 150 80" 
+                  dur="2.5s" repeatCount="indefinite" />
+              </path>
+              <path d="M170 160 Q175 140 165 120 Q160 100 175 80" stroke="url(#steamGradient)" strokeWidth="3" fill="none" strokeLinecap="round">
+                <animate attributeName="d" 
+                  values="M170 160 Q175 140 165 120 Q160 100 175 80;M170 160 Q160 140 175 120 Q180 100 170 80;M170 160 Q175 140 165 120 Q160 100 175 80" 
+                  dur="3.5s" repeatCount="indefinite" />
+              </path>
+            </g>
+            
+            {/* Coffee beans decoration */}
+            <g transform="translate(50, 320)">
+              <ellipse cx="0" cy="0" rx="8" ry="12" fill="#4A2C17" />
+              <path d="M0 -8 Q0 0 0 8" stroke="#2D1A0F" strokeWidth="2" />
+            </g>
+            <g transform="translate(250, 315) rotate(30)">
+              <ellipse cx="0" cy="0" rx="8" ry="12" fill="#4A2C17" />
+              <path d="M0 -8 Q0 0 0 8" stroke="#2D1A0F" strokeWidth="2" />
+            </g>
+            <g transform="translate(220, 300) rotate(-20)">
+              <ellipse cx="0" cy="0" rx="6" ry="9" fill="#4A2C17" />
+              <path d="M0 -6 Q0 0 0 6" stroke="#2D1A0F" strokeWidth="1.5" />
+            </g>
           </svg>
         </div>
 
@@ -113,7 +180,7 @@ const NotFound = () => {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 mb-8">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => handleNavigation("/")}
             className="group relative text-white font-bold px-10 py-4 rounded-2xl transform transition-all duration-300 hover:scale-110 hover:shadow-2xl overflow-hidden"
             style={{ background: "linear-gradient(to right, #050C28, #0A1654)" }}
           >
@@ -125,7 +192,7 @@ const NotFound = () => {
           </button>
 
           <button
-            onClick={() => navigate("/events")}
+            onClick={() => handleNavigation("/events")}
             className="relative text-white font-bold px-10 py-4 rounded-2xl transform transition-all duration-300 hover:scale-110 hover:shadow-xl overflow-hidden"
             style={{
               background: "linear-gradient(to right, #2563EB, #06B6D4)",

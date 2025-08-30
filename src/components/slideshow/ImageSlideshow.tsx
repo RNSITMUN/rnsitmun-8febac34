@@ -31,7 +31,6 @@ const SLIDESHOW_IMAGES = [
   "/slideshow/nexus_25 (5).jpg"
 ];
 
-
 const ImageSlideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -56,7 +55,9 @@ const ImageSlideshow = () => {
   }, []);
 
   return (
-    <div className={`relative w-full max-w-2xl h-64 md:h-80 lg:h-96 mx-auto rounded-2xl overflow-hidden ${loaded ? 'lusion-fade-in' : 'opacity-0'}`}>
+    <div 
+      className={`relative w-full max-w-2xl aspect-[16/9] mx-auto rounded-2xl overflow-hidden ${loaded ? 'lusion-fade-in' : 'opacity-0'}`}
+    >
       {/* Main slideshow container */}
       <div className="relative w-full h-full">
         {SLIDESHOW_IMAGES.map((image, index) => (
@@ -130,7 +131,7 @@ const ImageSlideshow = () => {
       </div>
       
       {/* Dots indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {SLIDESHOW_IMAGES.map((_, index) => (
           <button
             key={index}

@@ -47,7 +47,7 @@ const Navbar = () => {
               <img
                 src="/mun-logo.jpg"
                 alt="MUN Logo"
-                className="h-14 w-14 md:h-16 md:w-16 object-contain rounded-full shadow-sm transition-transform group-hover:scale-105"
+                className="h-14 w-14 md:h-16 md:w-16 object-contain rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
@@ -67,7 +67,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`nav-link-lusion relative px-4 py-2 font-inter font-medium text-sm uppercase tracking-wide transition-all duration-300 rounded-lg group ${
+                className={`relative px-4 py-2 font-inter font-medium text-sm uppercase tracking-wide transition-all duration-300 rounded-lg group ${
                   location.pathname === link.path
                     ? "text-primary after:scale-x-100 after:origin-bottom-left"
                     : "text-foreground hover:text-primary"
@@ -94,12 +94,12 @@ const Navbar = () => {
                 {isMenuOpen ? (
                   <X
                     size={30}
-                    className="text-primary transition-transform group-hover:rotate-90"
+                    className="text-primary transition-transform duration-300 group-hover:rotate-90"
                   />
                 ) : (
                   <Menu
                     size={30}
-                    className="text-primary transition-transform group-hover:scale-110"
+                    className="text-primary transition-transform duration-300 group-hover:scale-110"
                   />
                 )}
               </div>
@@ -110,12 +110,12 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`md:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-xl z-40 transition-all duration-500 ease-in-out ${
-          isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        className={`md:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-xl z-40 transform transition-transform duration-500 ease-in-out ${
+          isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
       >
         {/* Close button inside menu */}
-        <div className="flex justify-end p-6">
+        <div className="flex justify-end p-6 animate-fadeIn">
           <button
             onClick={() => setIsMenuOpen(false)}
             className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
@@ -131,13 +131,15 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`px-6 py-4 font-inter text-lg font-medium transition-all duration-300 rounded-xl relative group touch-manipulation ${
+              className={`px-6 py-4 font-inter text-lg font-medium transition-all duration-500 rounded-xl relative group touch-manipulation transform ${
                 location.pathname === link.path
                   ? "text-primary font-semibold bg-gradient-to-r from-primary/10 to-accent/5 shadow-lg shadow-primary/10"
                   : "text-foreground hover:text-primary hover:bg-primary/5"
               }`}
               onClick={() => setIsMenuOpen(false)} // auto-close on link click
-              style={{ animationDelay: `${index * 50}ms` }}
+              style={{
+                transitionDelay: `${index * 80}ms`,
+              }}
             >
               <span className="relative z-10 flex items-center">
                 {link.name}

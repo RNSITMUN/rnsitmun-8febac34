@@ -114,7 +114,19 @@ const Navbar = () => {
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
-        <div className="flex flex-col space-y-3 pt-24 px-6">
+        {/* Close button inside menu */}
+        <div className="flex justify-end p-6">
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+            aria-label="Close navigation menu"
+          >
+            <X size={26} className="text-primary" />
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <div className="flex flex-col space-y-3 pt-6 px-6">
           {navLinks.map((link, index) => (
             <Link
               key={link.name}
@@ -124,6 +136,7 @@ const Navbar = () => {
                   ? "text-primary font-semibold bg-gradient-to-r from-primary/10 to-accent/5 shadow-lg shadow-primary/10"
                   : "text-foreground hover:text-primary hover:bg-primary/5"
               }`}
+              onClick={() => setIsMenuOpen(false)} // auto-close on link click
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <span className="relative z-10 flex items-center">

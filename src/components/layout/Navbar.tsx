@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -99,16 +98,21 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Enhanced Mobile Menu */}
-        <div
-          className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${
-            isMenuOpen
-              ? "max-h-96 opacity-100 py-6"
-              : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="flex flex-col space-y-3 pt-6 border-t border-border/30 safe-area-inset-bottom">
+      {/* Enhanced Mobile Menu - Moved outside container for full width */}
+      <div
+        className={`md:hidden fixed left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border/50 shadow-lg transition-all duration-500 ease-in-out overflow-hidden ${
+          isMenuOpen
+            ? "max-h-screen opacity-100 visible"
+            : "max-h-0 opacity-0 invisible"
+        }`}
+        style={{
+          top: scrolled ? '64px' : '80px' // Adjust based on navbar height
+        }}
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col space-y-1 py-4 safe-area-inset-bottom">
             {navLinks.map((link, index) => (
               <Link
                 key={link.name}
@@ -118,7 +122,11 @@ const Navbar = () => {
                     ? "text-primary font-semibold bg-gradient-to-r from-primary/10 to-accent/5 shadow-lg shadow-primary/10"
                     : "text-foreground hover:text-primary hover:bg-primary/5"
                 }`}
-                style={{ animationDelay: `${index * 50}ms` }}
+                style={{ 
+                  animationDelay: `${index * 50}ms`,
+                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(-10px)',
+                  transition: `all 0.3s ease ${index * 50}ms`
+                }}
               >
                 <span className="relative z-10 flex items-center">
                   {link.name}
@@ -132,6 +140,17 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-[-1]"
+          onClick={toggleMenu}
+          style={{
+            top: scrolled ? '64px' : '80px'
+          }}
+        />
+      )}
     </nav>
   );
 };

@@ -33,9 +33,9 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 safe-area-inset-top ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-background/90 backdrop-blur-xl shadow-lg border-b border-border/50 h-16"
+          ? "bg-black/80 backdrop-blur-md shadow-md border-b border-gray-800 h-16"
           : "bg-transparent backdrop-blur-sm h-20"
       }`}
     >
@@ -51,10 +51,10 @@ const Navbar = () => {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-inter font-bold text-lg md:text-xl text-foreground group-hover:text-primary transition-colors duration-300">
+              <span className="font-bold text-lg md:text-xl text-white group-hover:text-blue-400 transition-colors duration-300">
                 RNSIT MUNSoc
               </span>
-              <span className="font-inter text-xs text-muted-foreground hidden sm:block tracking-wide">
+              <span className="text-xs text-gray-400 hidden sm:block tracking-wide">
                 Model United Nations
               </span>
             </div>
@@ -66,10 +66,10 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`relative px-3 py-2 font-inter text-sm font-medium uppercase tracking-wide transition-colors duration-300 ${
+                className={`relative px-3 py-2 text-sm font-medium uppercase tracking-wide transition-colors duration-300 ${
                   location.pathname === link.path
-                    ? "text-primary"
-                    : "text-foreground hover:text-primary"
+                    ? "text-blue-400"
+                    : "text-white hover:text-blue-400"
                 }`}
               >
                 {link.name}
@@ -81,18 +81,18 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="relative w-11 h-11 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors duration-300 flex items-center justify-center group"
+              className="relative w-11 h-11 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-colors duration-300 flex items-center justify-center group"
               aria-label="Toggle navigation menu"
             >
               {isMenuOpen ? (
                 <X
                   size={28}
-                  className="text-primary transition-transform duration-500 group-hover:rotate-90"
+                  className="text-blue-400 transition-transform duration-500 group-hover:rotate-90"
                 />
               ) : (
                 <Menu
                   size={28}
-                  className="text-primary transition-transform duration-500 group-hover:scale-110"
+                  className="text-blue-400 transition-transform duration-500 group-hover:scale-110"
                 />
               )}
             </button>
@@ -106,7 +106,7 @@ const Navbar = () => {
           <>
             {/* Overlay */}
             <motion.div
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -116,7 +116,7 @@ const Navbar = () => {
 
             {/* Drawer */}
             <motion.div
-              className="fixed top-0 right-0 w-4/5 max-w-sm h-full bg-background/95 backdrop-blur-xl z-50 shadow-2xl flex flex-col"
+              className="fixed top-0 right-0 w-4/5 max-w-sm h-full bg-black/95 backdrop-blur-xl z-50 shadow-2xl flex flex-col"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -126,10 +126,10 @@ const Navbar = () => {
               <div className="flex justify-end p-6">
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors"
                   aria-label="Close navigation menu"
                 >
-                  <X size={24} className="text-primary" />
+                  <X size={24} className="text-blue-400" />
                 </button>
               </div>
 
@@ -158,8 +158,8 @@ const Navbar = () => {
                       onClick={() => setIsMenuOpen(false)}
                       className={`block px-4 py-3 text-lg font-medium rounded-lg transition-colors ${
                         location.pathname === link.path
-                          ? "text-primary bg-primary/10"
-                          : "text-foreground hover:text-primary hover:bg-primary/5"
+                          ? "text-blue-400 bg-blue-400/10"
+                          : "text-white hover:text-blue-400 hover:bg-blue-400/5"
                       }`}
                     >
                       {link.name}
@@ -176,3 +176,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

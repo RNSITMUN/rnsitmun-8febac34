@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,12 +13,13 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    setIsMenuOpen(false); // auto close on route change
+    setIsMenuOpen(false);
   }, [location.pathname]);
 
   const navLinks = [
@@ -33,10 +33,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 safe-area-inset-top ${
         scrolled
-          ? "bg-black/80 backdrop-blur-md shadow-md border-b border-gray-800 h-16"
-          : "bg-transparent backdrop-blur-sm h-20"
+          ? "bg-background/98 backdrop-blur-xl shadow-lg border-b border-border/50 py-2 h-16"
+          : "bg-background/95 backdrop-blur-lg py-3 sm:py-4 h-20 md:h-16"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,32 +47,38 @@ const Navbar = () => {
               <img
                 src="/mun-logo.jpg"
                 alt="MUN Logo"
-                className="h-12 w-12 md:h-14 md:w-14 object-contain rounded-full shadow-sm transition-transform duration-500 group-hover:scale-110"
+                className="h-14 w-14 md:h-16 md:w-16 object-contain rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
+              <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-lg md:text-xl text-white group-hover:text-blue-400 transition-colors duration-300">
+              <span className="font-inter font-bold text-lg md:text-xl text-foreground group-hover:text-primary transition-colors">
                 RNSIT MUNSoc
               </span>
-              <span className="text-xs text-gray-400 hidden sm:block tracking-wide">
+              <span className="font-inter text-xs text-muted-foreground hidden sm:block tracking-wide">
                 Model United Nations
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`relative px-3 py-2 text-sm font-medium uppercase tracking-wide transition-colors duration-300 ${
+                className={`relative px-4 py-2 font-inter font-medium text-sm uppercase tracking-wide transition-all duration-300 rounded-lg group ${
                   location.pathname === link.path
-                    ? "text-blue-400"
-                    : "text-white hover:text-blue-400"
+                    ? "text-primary after:scale-x-100 after:origin-bottom-left"
+                    : "text-foreground hover:text-primary"
                 }`}
               >
-                {link.name}
+                <span className="relative z-10">{link.name}</span>
+                <div
+                  className={`absolute inset-0 rounded-lg bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                    location.pathname === link.path ? "opacity-100" : ""
+                  }`}
+                ></div>
               </Link>
             ))}
           </div>
@@ -81,99 +87,73 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="relative w-11 h-11 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-colors duration-300 flex items-center justify-center group"
+              className="relative w-12 h-12 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors duration-300 flex items-center justify-center group touch-manipulation"
               aria-label="Toggle navigation menu"
             >
-              {isMenuOpen ? (
-                <X
-                  size={28}
-                  className="text-blue-400 transition-transform duration-500 group-hover:rotate-90"
-                />
-              ) : (
-                <Menu
-                  size={28}
-                  className="text-blue-400 transition-transform duration-500 group-hover:scale-110"
-                />
-              )}
+              <div className="relative">
+                {isMenuOpen ? (
+                  <X
+                    size={30}
+                    className="text-primary transition-transform duration-300 group-hover:rotate-90"
+                  />
+                ) : (
+                  <Menu
+                    size={30}
+                    className="text-primary transition-transform duration-300 group-hover:scale-110"
+                  />
+                )}
+              </div>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu with Framer Motion */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <>
-            {/* Overlay */}
-            <motion.div
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              onClick={() => setIsMenuOpen(false)}
-            />
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`md:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-xl z-40 transform transition-transform duration-500 ease-in-out ${
+          isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        }`}
+      >
+        {/* Close button inside menu */}
+        <div className="flex justify-end p-6 animate-fadeIn">
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+            aria-label="Close navigation menu"
+          >
+            <X size={26} className="text-primary" />
+          </button>
+        </div>
 
-            {/* Drawer */}
-            <motion.div
-              className="fixed top-0 right-0 w-4/5 max-w-sm h-full bg-black/95 backdrop-blur-xl z-50 shadow-2xl flex flex-col"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 80, damping: 20 }}
+        {/* Nav links */}
+        <div className="flex flex-col space-y-3 pt-6 px-6">
+          {navLinks.map((link, index) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={`px-6 py-4 font-inter text-lg font-medium transition-all duration-500 rounded-xl relative group touch-manipulation transform ${
+                location.pathname === link.path
+                  ? "text-primary font-semibold bg-gradient-to-r from-primary/10 to-accent/5 shadow-lg shadow-primary/10"
+                  : "text-foreground hover:text-primary hover:bg-primary/5"
+              }`}
+              onClick={() => setIsMenuOpen(false)} // auto-close on link click
+              style={{
+                transitionDelay: `${index * 80}ms`,
+              }}
             >
-              {/* Close Button */}
-              <div className="flex justify-end p-6">
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors"
-                  aria-label="Close navigation menu"
-                >
-                  <X size={24} className="text-blue-400" />
-                </button>
-              </div>
-
-              {/* Nav Links with Stagger Animation */}
-              <motion.div
-                className="flex flex-col space-y-4 px-8 pt-4"
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-                variants={{
-                  hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
-                  show: { transition: { staggerChildren: 0.1 } },
-                }}
-              >
-                {navLinks.map((link) => (
-                  <motion.div
-                    key={link.name}
-                    variants={{
-                      hidden: { opacity: 0, x: 50 },
-                      show: { opacity: 1, x: 0 },
-                    }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <Link
-                      to={link.path}
-                      onClick={() => setIsMenuOpen(false)}
-                      className={`block px-4 py-3 text-lg font-medium rounded-lg transition-colors ${
-                        location.pathname === link.path
-                          ? "text-blue-400 bg-blue-400/10"
-                          : "text-white hover:text-blue-400 hover:bg-blue-400/5"
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+              <span className="relative z-10 flex items-center">
+                {link.name}
+                {location.pathname === link.path && (
+                  <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                )}
+              </span>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </nav>
   );
 };
 
 export default Navbar;
-

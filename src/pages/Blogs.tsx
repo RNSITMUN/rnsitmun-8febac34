@@ -3,7 +3,7 @@ import Layout from "@/components/layout/Layout";
 const Blogs = () => {
   return (
     <Layout>
-      <div className="min-h-screen bg-background">
+      <div className="py-12 md:py-20 bg-background">
         {/* Enhanced Hero Section */}
         <section className="relative py-16 sm:py-20 lg:py-32 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10"></div>

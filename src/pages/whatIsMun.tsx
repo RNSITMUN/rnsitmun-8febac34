@@ -39,7 +39,7 @@ const WhatIsMun = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="py-12 md:py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 bg-gradient-to-r from-mun-primary via-mun-secondary to-mun-tertiary overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>

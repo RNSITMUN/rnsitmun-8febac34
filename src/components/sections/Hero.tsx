@@ -33,7 +33,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-visible bg-background pt-16 md:pt-24">
+    <section className="relative min-h-[70vh] md:min-h-[90vh] flex flex-col justify-center overflow-visible bg-background py-12 md:py-20">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/10" />
 

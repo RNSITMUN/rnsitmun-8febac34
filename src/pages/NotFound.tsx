@@ -38,7 +38,7 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-black relative overflow-hidden">
+    <div className="min-h-[70vh] md:min-h-[90vh] flex flex-col justify-between bg-black relative overflow-hidden">
       {/* ✅ Global Navbar */}
       <Navbar />
 
@@ -189,7 +189,7 @@ const NotFound = () => {
       <Footer />
 
       {/* Animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes gentle-bounce {
           0%, 100% { transform: translateY(0) scale(1); }
           50% { transform: translateY(-8px) scale(1.02); }

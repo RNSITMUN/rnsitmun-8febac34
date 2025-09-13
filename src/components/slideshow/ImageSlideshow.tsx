@@ -70,7 +70,7 @@ const ImageSlideshow = () => {
             <img
               src={image}
               alt={`RNSIT MUN ${image.includes('inaugration') ? 'inauguration ceremony' : image.includes('unicon') ? 'UNICON conference' : image.includes('nexus') ? 'NEXUS event' : image.includes('atlas') ? 'ATLAS conference' : 'Model United Nations event'} at RNS Institute of Technology`}
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-cover"
               loading={index === 0 ? "eager" : "lazy"}
               decoding="async"
               fetchPriority={index === 0 ? "high" : "low"}

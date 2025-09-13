@@ -55,11 +55,10 @@ const ImageSlideshow = () => {
   }, []);
 
   return (
-    <div 
-      className={`relative w-full max-w-2xl aspect-[16/9] mx-auto rounded-2xl overflow-hidden ${loaded ? 'lusion-fade-in' : 'opacity-0'}`}
+      <div className="relative w-full max-w-2xl aspect-[16/9] mx-auto rounded-2xl overflow-hidden bg-muted/20"
     >
       {/* Main slideshow container */}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full min-h-[200px]">
         {SLIDESHOW_IMAGES.map((image, index) => (
           <div
             key={index}
@@ -70,7 +69,7 @@ const ImageSlideshow = () => {
             <img
               src={image}
               alt={`RNSIT MUN ${image.includes('inaugration') ? 'inauguration ceremony' : image.includes('unicon') ? 'UNICON conference' : image.includes('nexus') ? 'NEXUS event' : image.includes('atlas') ? 'ATLAS conference' : 'Model United Nations event'} at RNS Institute of Technology`}
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover min-h-[200px]"
               loading={index === 0 ? "eager" : "lazy"}
               decoding="async"
               fetchPriority={index === 0 ? "high" : "low"}
@@ -81,7 +80,11 @@ const ImageSlideshow = () => {
                 console.warn(`Failed to load image: ${image}`);
                 e.currentTarget.style.display = 'none';
               }}
-              style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
+              style={{ 
+                opacity: 0, 
+                transition: 'opacity 0.3s ease-in-out',
+                backgroundColor: 'hsl(var(--muted))'
+              }}
             />
           </div>
         ))}

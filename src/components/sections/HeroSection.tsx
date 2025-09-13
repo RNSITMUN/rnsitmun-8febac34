@@ -33,7 +33,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[70vh] md:min-h-[90vh] flex flex-col justify-center overflow-visible bg-background py-12 md:py-20">
+    <section className="relative min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-visible bg-background py-8 sm:py-12 md:py-16">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/10" />
 
@@ -110,8 +110,10 @@ const HeroSection = () => {
           </div>
 
           {/* Image Slideshow */}
-          <div className="relative mt-8 lg:mt-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl p-1">
-            <ImageSlideshow />
+          <div className="relative mt-8 lg:mt-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl p-1 overflow-hidden">
+            <div className="bg-muted/20 rounded-2xl min-h-[200px] flex items-center justify-center">
+              <ImageSlideshow />
+            </div>
           </div>
         </div>
       </div>

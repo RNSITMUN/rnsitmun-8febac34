@@ -38,7 +38,7 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-[70vh] md:min-h-[90vh] flex flex-col justify-between bg-black relative overflow-hidden">
+    <div className="min-h-[70vh] md:min-h-[80vh] flex flex-col justify-between bg-black relative overflow-hidden">
       {/* ✅ Global Navbar */}
       <Navbar />
 

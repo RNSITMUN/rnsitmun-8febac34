@@ -47,15 +47,15 @@ const Navbar = () => {
               <img
                 src="/mun-logo.jpg"
                 alt="MUN Logo"
-                className="h-14 w-14 md:h-16 md:w-16 object-contain rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
+                className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 max-w-[40px] sm:max-w-[48px] md:max-w-[56px] object-contain rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
             <div className="flex flex-col">
-              <span className="font-inter font-bold text-lg md:text-xl text-foreground group-hover:text-primary transition-colors">
+              <span className="font-inter font-bold text-base sm:text-lg md:text-xl text-foreground group-hover:text-primary transition-colors max-w-[120px] md:max-w-[160px] truncate">
                 RNSIT MUNSoc
               </span>
-              <span className="font-inter text-xs text-muted-foreground hidden sm:block tracking-wide">
+              <span className="font-inter text-xs text-muted-foreground hidden sm:block tracking-wide max-w-[120px] truncate">
                 Model United Nations
               </span>
             </div>
@@ -110,7 +110,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`md:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-xl z-40 transform transition-transform duration-500 ease-in-out ${
+        className={`md:hidden fixed top-0 left-0 w-full min-h-[100dvh] bg-background/95 backdrop-blur-xl z-40 transform transition-transform duration-500 ease-in-out ${
           isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
       >

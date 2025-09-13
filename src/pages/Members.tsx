@@ -302,8 +302,15 @@ const Members = () => {
                           <img
                             src={`/MEMBERS/delegation/${member.filename}`}
                             alt={member.name}
-                            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                            className="w-full h-auto object-cover transition-all duration-500 group-hover:scale-110"
                             loading="lazy"
+                            onError={(e) => {
+                              e.currentTarget.src = '/mun-logo.jpg';
+                            }}
+                            style={{
+                              backgroundColor: 'hsl(var(--muted))',
+                              minHeight: '200px'
+                            }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                           <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">

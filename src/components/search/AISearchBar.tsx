@@ -1,5 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, Loader2, ThumbsUp, ThumbsDown, ExternalLink, Sparkles, ArrowRight } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  ThumbsUp,
+  ThumbsDown,
+  ExternalLink,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +15,6 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
-import mermaid from "mermaid";
 
 interface SearchResult {
   answer: string;
@@ -24,7 +31,7 @@ const EXAMPLE_QUERIES = [
   "Latest UN statements on climate change",
   "How to draft a MUN resolution?",
   "What are the functions of the ICJ?",
-  "India's position on global diplomacy"
+  "India's position on global diplomacy",
 ];
 
 // 🔧 Confidence calculation helper
@@ -35,42 +42,30 @@ const calculateConfidence = (sources: any[], answer: string) => {
   return 0.7;
 };
 
-// 🖼️ Flowchart renderer
-const Flowchart = ({ chartCode }: { chartCode: string }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      mermaid.initialize({ startOnLoad: true, theme: "dark" });
-      try {
-        mermaid.render("graphDiv", chartCode).then(({ svg }) => {
-          if (ref.current) ref.current.innerHTML = svg;
-        });
-      } catch (e) {
-        console.error("Mermaid render error:", e);
-      }
-    }
-  }, [chartCode]);
-
-  return <div ref={ref} className="my-4" />;
-};
-
 const AISearchBar = () => {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [result, setResult] = useState<SearchResult | null>(null);
-  const [extraContent, setExtraContent] = useState<JSX.Element | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  // ✅ Initialize mermaid safely (only client-side)
+  useEffect(() => {
+    (async () => {
+      if (typeof window !== "undefined") {
+        const mermaid = await import("mermaid");
+        mermaid.default.initialize({ startOnLoad: true, theme: "dark" });
+      }
+    })();
+  }, []);
 
   const handleSearch = async (searchQuery: string = query) => {
     if (!searchQuery.trim()) return;
 
     setIsSearching(true);
     setResult(null);
-    setExtraContent(null);
     setFeedback(null);
 
     try {
@@ -82,10 +77,8 @@ const AISearchBar = () => {
         throw new Error(error.message || "Search failed");
       }
 
-      // ✅ Ensure sources array is valid
       const safeSources = Array.isArray(data.sources) ? data.sources : [];
 
-      // ✅ Dynamically calculate confidence
       const confidence = calculateConfidence(safeSources, data.answer);
 
       const updatedResult: SearchResult = {
@@ -96,40 +89,6 @@ const AISearchBar = () => {
 
       setResult(updatedResult);
 
-      // 🔧 Detect extra content markers
-      if (data.answer?.includes(":::flowchart")) {
-        const chartCode = data.answer.split(":::flowchart")[1]?.trim();
-        if (chartCode) setExtraContent(<Flowchart chartCode={chartCode} />);
-      } else if (data.answer?.includes(":::stats")) {
-        setExtraContent(
-          <div className="overflow-x-auto my-4">
-            <table className="min-w-full text-sm text-white border border-white/20 rounded-lg">
-              <thead className="bg-white/10">
-                <tr>
-                  <th className="px-4 py-2 border-b border-white/20">Year</th>
-                  <th className="px-4 py-2 border-b border-white/20">Participants</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="px-4 py-2 border-b border-white/10">2022</td>
-                  <td className="px-4 py-2 border-b border-white/10">500,000+</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border-b border-white/10">2023</td>
-                  <td className="px-4 py-2 border-b border-white/10">650,000+</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2">2024</td>
-                  <td className="px-4 py-2">700,000+</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        );
-      }
-
-      // Log query with updated confidence
       await logQuery(searchQuery, updatedResult);
     } catch (error) {
       console.error("Search error:", error);
@@ -215,7 +174,14 @@ const AISearchBar = () => {
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             onFocus={() => {
               setShowSuggestions(true);
-              setTimeout(() => inputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 0);
+              setTimeout(
+                () =>
+                  inputRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  }),
+                0
+              );
             }}
             className="pl-12 pr-24 h-14 sm:h-16 text-base sm:text-lg font-inter bg-black/80 border border-primary/30 focus:border-primary/50 focus:ring-1 focus:ring-primary/30 text-white placeholder:text-white/60 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:bg-black/90 focus:bg-black/90 w-full"
             style={{ fontSize: "16px" }}
@@ -240,7 +206,9 @@ const AISearchBar = () => {
             <CardContent className="p-4 sm:p-6 max-h-[60vh] overflow-y-auto overscroll-contain pr-1">
               <div className="flex items-center mb-4">
                 <Sparkles className="w-4 h-4 mr-2 text-primary animate-pulse" />
-                <p className="text-sm sm:text-base text-white/70 font-inter font-medium">Popular questions to get you started:</p>
+                <p className="text-sm sm:text-base text-white/70 font-inter font-medium">
+                  Popular questions to get you started:
+                </p>
               </div>
               <div className="grid grid-cols-1 gap-2 sm:gap-3">
                 {EXAMPLE_QUERIES.map((example, index) => (
@@ -259,7 +227,9 @@ const AISearchBar = () => {
                 ))}
               </div>
               <div className="mt-4 pt-3 border-t border-white/10">
-                <p className="text-xs text-white/40 font-inter text-center">Click any suggestion to search instantly</p>
+                <p className="text-xs text-white/40 font-inter text-center">
+                  Click any suggestion to search instantly
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -274,18 +244,39 @@ const AISearchBar = () => {
               {/* Answer */}
               <div className="ai-response-bubble">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-white font-inter">AI Response</h3>
+                  <h3 className="text-xl font-bold text-white font-inter">
+                    AI Response
+                  </h3>
                   <Badge
                     variant={result.confidence > 0.8 ? "default" : "secondary"}
-                    className={`${result.confidence > 0.8 ? "bg-primary text-white" : "bg-white/10 text-white/80"} font-inter font-medium`}
+                    className={`${
+                      result.confidence > 0.8
+                        ? "bg-primary text-white"
+                        : "bg-white/10 text-white/80"
+                    } font-inter font-medium`}
                   >
                     {Math.round(result.confidence * 100)}% confidence
                   </Badge>
                 </div>
-                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4 sm:p-6 hover:border-primary/40 transition-all duration-300">
+                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4 sm:p-6 hover:border-primary/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(26,47,251,0.1)]">
                   <div className="text-white font-inter leading-relaxed prose prose-invert max-w-none">
-                    <ReactMarkdown>{result.answer}</ReactMarkdown>
-                    {extraContent}
+                    <ReactMarkdown
+                      components={{
+                        code({ inline, className, children, ...props }) {
+                          const code = String(children).trim();
+                          if (className === "language-mermaid") {
+                            return <div className="mermaid">{code}</div>;
+                          }
+                          return (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        },
+                      }}
+                    >
+                      {result.answer}
+                    </ReactMarkdown>
                   </div>
                 </div>
               </div>
@@ -293,7 +284,9 @@ const AISearchBar = () => {
               {/* Sources */}
               {result.sources && result.sources.length > 0 && (
                 <div>
-                  <h4 className="text-lg font-bold text-white mb-4 font-inter">Sources</h4>
+                  <h4 className="text-lg font-bold text-white mb-4 font-inter">
+                    Sources
+                  </h4>
                   <div className="space-y-3">
                     {result.sources.map((source, index) => (
                       <div
@@ -302,8 +295,12 @@ const AISearchBar = () => {
                       >
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
-                            <h5 className="font-semibold text-white font-inter mb-2 text-sm sm:text-base line-clamp-2">{source.title}</h5>
-                            <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-inter line-clamp-3">{source.snippet}</p>
+                            <h5 className="font-semibold text-white font-inter mb-2 text-sm sm:text-base line-clamp-2">
+                              {source.title}
+                            </h5>
+                            <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-inter line-clamp-3">
+                              {source.snippet}
+                            </p>
                           </div>
                           <Button
                             variant="ghost"
@@ -311,7 +308,12 @@ const AISearchBar = () => {
                             asChild
                             className="self-start sm:ml-3 text-primary hover:text-white hover:bg-primary/20 transition-all duration-300 rounded-lg min-h-8 min-w-8 flex-shrink-0"
                           >
-                            <a href={source.url} target="_blank" rel="noopener noreferrer" aria-label="Open source link">
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Open source link"
+                            >
                               <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                             </a>
                           </Button>
@@ -324,7 +326,9 @@ const AISearchBar = () => {
 
               {/* Feedback */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/10">
-                <p className="text-xs sm:text-sm text-white/60 font-inter text-center sm:text-left">Was this answer helpful?</p>
+                <p className="text-xs sm:text-sm text-white/60 font-inter text-center sm:text-left">
+                  Was this answer helpful?
+                </p>
                 <div className="flex justify-center sm:justify-end space-x-3">
                   <Button
                     variant={feedback === "up" ? "default" : "outline"}
@@ -360,7 +364,10 @@ const AISearchBar = () => {
       {/* Privacy Notice */}
       <p className="text-xs text-white/40 text-center font-inter leading-relaxed">
         Your queries are used to improve our AI search experience.
-        <a href="/privacy" className="text-primary hover:text-primary/80 hover:underline ml-1 transition-colors duration-300">
+        <a
+          href="/privacy"
+          className="text-primary hover:text-primary/80 hover:underline ml-1 transition-colors duration-300"
+        >
           Privacy Policy
         </a>
       </p>

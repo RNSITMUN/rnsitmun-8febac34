@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Globe, ArrowRight, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import ImageSlideshow from "@/components/slideshow/ImageSlideshow";
 
 // Floating Particles
@@ -33,7 +34,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-visible bg-background py-8 sm:py-12 md:py-16">
+    <section className="relative w-full min-h-[70vh] md:min-h-[85vh] flex flex-col justify-center overflow-visible bg-background py-8 sm:py-12 md:py-16">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/10" />
 
@@ -48,10 +49,11 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           {/* Left Column: Text */}
-          <div
-            className={`space-y-4 sm:space-y-6 text-center lg:text-left transition-opacity duration-700 ${
-              loaded ? "opacity-100" : "opacity-0"
-            }`}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: loaded ? 1 : 0, y: loaded ? 0 : 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="space-y-4 sm:space-y-6 text-center lg:text-left"
           >
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
               <Sparkles className="w-4 h-4 mr-2 text-primary animate-pulse" />
@@ -105,13 +107,18 @@ const Hero = () => {
                 </Link>
               </Button>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="relative mt-8 lg:mt-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl p-1 overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: loaded ? 1 : 0, scale: loaded ? 1 : 0.9 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="relative mt-8 lg:mt-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl p-1 overflow-hidden"
+          >
             <div className="bg-muted/20 rounded-2xl min-h-[200px] flex items-center justify-center">
               <ImageSlideshow />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 

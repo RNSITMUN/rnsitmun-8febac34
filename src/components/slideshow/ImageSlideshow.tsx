@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../ui/button";
 
 const SLIDESHOW_IMAGES = [
@@ -33,6 +34,9 @@ const SLIDESHOW_IMAGES = [
 
 const ImageSlideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState<boolean[]>(
+    new Array(SLIDESHOW_IMAGES.length).fill(false)
+  );
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % SLIDESHOW_IMAGES.length);
@@ -40,6 +44,14 @@ const ImageSlideshow = () => {
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + SLIDESHOW_IMAGES.length) % SLIDESHOW_IMAGES.length);
+  };
+
+  const handleImageLoad = (index: number) => {
+    setImageLoaded(prev => {
+      const newLoaded = [...prev];
+      newLoaded[index] = true;
+      return newLoaded;
+    });
   };
 
   useEffect(() => {
@@ -54,24 +66,48 @@ const ImageSlideshow = () => {
 
   return (
     <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden bg-muted/20">
-      {/* Image wrapper that resizes automatically */}
-      <div className="relative w-full flex items-center justify-center">
-        {SLIDESHOW_IMAGES.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ease-in-out ${
-              index === currentImageIndex ? "opacity-100 relative" : "opacity-0"
-            }`}
+      {/* Image wrapper with fixed height for consistency */}
+      <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="absolute inset-0 flex items-center justify-center"
           >
+            {!imageLoaded[currentImageIndex] && (
+              <div className="absolute inset-0 flex items-center justify-center bg-muted/40">
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
             <img
-              src={image}
-              alt={`RNSIT MUN slideshow ${index + 1}`}
-              className="w-auto h-auto max-w-full max-h-[80vh] object-contain"
-              loading={index === 0 ? "eager" : "lazy"}
+              src={SLIDESHOW_IMAGES[currentImageIndex]}
+              alt={`RNSIT MUN slideshow ${currentImageIndex + 1}`}
+              className="w-full h-full object-cover rounded-2xl"
+              loading={currentImageIndex === 0 ? "eager" : "lazy"}
               decoding="async"
-              fetchPriority={index === 0 ? "high" : "low"}
+              fetchPriority={currentImageIndex === 0 ? "high" : "low"}
+              onLoad={() => handleImageLoad(currentImageIndex)}
+              onError={(e) => {
+                e.currentTarget.src = '/placeholder.svg';
+                handleImageLoad(currentImageIndex);
+              }}
             />
-          </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Preload next few images */}
+        {SLIDESHOW_IMAGES.slice(0, 3).map((image, index) => (
+          <img
+            key={`preload-${index}`}
+            src={image}
+            alt=""
+            className="hidden"
+            loading="eager"
+            onLoad={() => handleImageLoad(index)}
+          />
         ))}
 
         {/* Gradient overlay */}

@@ -8,6 +8,7 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -55,8 +56,12 @@ const AISearchBar = () => {
   useEffect(() => {
     (async () => {
       if (typeof window !== "undefined") {
-        const mermaid = await import("mermaid");
-        mermaid.default.initialize({ startOnLoad: true, theme: "dark" });
+        try {
+          const { default: mermaid } = await import("mermaid");
+          mermaid.initialize({ startOnLoad: true, theme: "dark" });
+        } catch (error) {
+          console.warn("Mermaid not available:", error);
+        }
       }
     })();
   }, []);
@@ -262,7 +267,7 @@ const AISearchBar = () => {
                   <div className="text-white font-inter leading-relaxed prose prose-invert max-w-none">
                     <ReactMarkdown
                       components={{
-                        code({ inline, className, children, ...props }) {
+                        code({ node, inline, className, children, ...props }: any) {
                           const code = String(children).trim();
                           if (className === "language-mermaid") {
                             return <div className="mermaid">{code}</div>;

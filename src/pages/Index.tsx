@@ -13,7 +13,7 @@ const Index = () => {
       <LocalSEOSection />
       
       {/* Enhanced AI Search Section */}
-      <section className="py-10 sm:py-16 lg:py-28 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-visible">
+      <section className="py-12 md:py-20 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-visible">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
         
         {/* Floating particles for visual enhancement */}

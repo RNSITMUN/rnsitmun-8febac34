@@ -14,7 +14,7 @@ RNSIT MUN is a student-led initiative that simulates the workings of the United 
 ## 🏛️ The Event
 - **Host Institution:** RNS Institute of Technology, Bengaluru.
 - **Committees & Agendas:** Multiple UN committees with carefully curated agendas (details on the website).
-- **Delegates:** Open to students across colleges and universities.
+- **Delegates:** Open to students across RNSIT.
 - **Workshops & Training:** Sessions to help first-time delegates understand MUN procedures.
 
 ## 🌐 Website

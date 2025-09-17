@@ -37,8 +37,8 @@ const Events = () => {
       description:
         "RNSMUN 2025 will bring together delegates from across the nation for an immersive diplomatic experience featuring engaging committees, thought-provoking agendas, and a platform to showcase leadership.",
       status: "upcoming",
-      participants: "300+ Delegates Expected",
-      committees: ["UNGA", "UNSC", "AIPPM"],
+      participants: "-",
+      committees: ["-"],
       image: "/mun-logo.jpg",
       highlight: false,
       icon: Globe,

@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      atlas_registrations: {
+        Row: {
+          agreed_terms: boolean
+          created_at: string | null
+          id: number
+          institution_name: string | null
+          is_rnsit: boolean
+          participant1_contact: string
+          participant1_name: string
+          participant2_contact: string | null
+          participant2_name: string | null
+          payment_amount: number
+          payment_proof_url: string | null
+          stream_of_study: string
+          team_name: string
+          team_size: number
+        }
+        Insert: {
+          agreed_terms?: boolean
+          created_at?: string | null
+          id?: number
+          institution_name?: string | null
+          is_rnsit?: boolean
+          participant1_contact: string
+          participant1_name: string
+          participant2_contact?: string | null
+          participant2_name?: string | null
+          payment_amount?: number
+          payment_proof_url?: string | null
+          stream_of_study: string
+          team_name: string
+          team_size?: number
+        }
+        Update: {
+          agreed_terms?: boolean
+          created_at?: string | null
+          id?: number
+          institution_name?: string | null
+          is_rnsit?: boolean
+          participant1_contact?: string
+          participant1_name?: string
+          participant2_contact?: string | null
+          participant2_name?: string | null
+          payment_amount?: number
+          payment_proof_url?: string | null
+          stream_of_study?: string
+          team_name?: string
+          team_size?: number
+        }
+        Relationships: []
+      }
       search_feedback: {
         Row: {
           created_at: string

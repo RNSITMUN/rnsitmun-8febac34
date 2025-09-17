@@ -2,31 +2,45 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Upload, Users, Trophy, Calendar, MapPin, Clock } from "lucide-react";
+import { Upload, Users, Trophy, Calendar, MapPin, QrCode } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
-  participantName: z.string().min(2, "Participant name must be at least 2 characters"),
-  contactNumber: z.string().regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number"),
+  participant1Name: z.string().min(2, "Participant 1 name must be at least 2 characters"),
+  participant1Contact: z.string().regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number"),
+  teamSize: z.enum(["1", "2"], { required_error: "Please select team size" }),
+  participant2Name: z.string().optional(),
+  participant2Contact: z.string().optional(),
   streamOfStudy: z.string().min(2, "Stream of study is required"),
   representsRNSIT: z.boolean(),
   institutionName: z.string().optional(),
   teamName: z.string().min(3, "Team name must be at least 3 characters"),
+  agreedTerms: z.boolean().refine((val) => val === true, "You must agree to terms and conditions"),
   paymentScreenshot: z.any().refine((files) => files?.length > 0, "Payment screenshot is required"),
 }).refine((data) => {
-  if (!data.representsRNSIT && !data.institutionName) {
-    return false;
+  if (data.teamSize === "2") {
+    return data.participant2Name && data.participant2Name.length >= 2 &&
+           data.participant2Contact && /^[6-9]\d{9}$/.test(data.participant2Contact);
   }
   return true;
 }, {
-  message: "Institution name is required if not representing RNSIT",
+  message: "Participant 2 details are required for team of 2",
+  path: ["participant2Name"],
+}).refine((data) => {
+  if (!data.representsRNSIT) {
+    return data.institutionName && data.institutionName.length >= 2;
+  }
+  return true;
+}, {
+  message: "Institution name is required when not representing RNSIT",
   path: ["institutionName"],
 });
 
@@ -39,14 +53,21 @@ const AtlasQuiz = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      participantName: "",
-      contactNumber: "",
+      participant1Name: "",
+      participant1Contact: "",
+      teamSize: "1",
+      participant2Name: "",
+      participant2Contact: "",
       streamOfStudy: "",
       representsRNSIT: false,
       institutionName: "",
       teamName: "",
+      agreedTerms: false,
     },
   });
+
+  const teamSize = form.watch("teamSize");
+  const representsRNSIT = form.watch("representsRNSIT");
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -57,20 +78,34 @@ const AtlasQuiz = () => {
       const fileName = `${Date.now()}_${file.name}`;
       
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('payment_screenshots')
+        .from('atlas-payment-proofs')
         .upload(fileName, file);
 
       if (uploadError) {
         throw new Error('Failed to upload payment screenshot');
       }
 
-      // For now, we'll use the existing search_queries table as a workaround
-      // In production, you would create a proper atlas_registrations table
+      // Get public URL for the uploaded file
+      const { data: { publicUrl } } = supabase.storage
+        .from('atlas-payment-proofs')
+        .getPublicUrl(fileName);
+
+      // Insert registration data into atlas_registrations table
       const { error: insertError } = await supabase
-        .from('search_queries')
+        .from('atlas_registrations')
         .insert({
-          query: `Atlas Registration: ${data.teamName}`,
-          timestamp: new Date().toISOString(),
+          participant1_name: data.participant1Name,
+          participant1_contact: data.participant1Contact,
+          participant2_name: data.teamSize === "2" ? data.participant2Name : null,
+          participant2_contact: data.teamSize === "2" ? data.participant2Contact : null,
+          stream_of_study: data.streamOfStudy,
+          is_rnsit: data.representsRNSIT,
+          institution_name: data.representsRNSIT ? null : data.institutionName,
+          team_name: data.teamName,
+          team_size: parseInt(data.teamSize),
+          agreed_terms: data.agreedTerms,
+          payment_amount: 60,
+          payment_proof_url: publicUrl,
         });
 
       if (insertError) {
@@ -94,8 +129,6 @@ const AtlasQuiz = () => {
       setIsSubmitting(false);
     }
   };
-
-  const representsRNSIT = form.watch("representsRNSIT");
 
   return (
     <Layout>
@@ -158,13 +191,13 @@ const AtlasQuiz = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField
                     control={form.control}
-                    name="participantName"
+                    name="participant1Name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Participant Name</FormLabel>
+                        <FormLabel className="text-white">Participant 1 Name</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Enter participant name"
+                            placeholder="Enter participant 1 name"
                             className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
                             {...field}
                           />
@@ -176,10 +209,10 @@ const AtlasQuiz = () => {
 
                   <FormField
                     control={form.control}
-                    name="contactNumber"
+                    name="participant1Contact"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Contact Number</FormLabel>
+                        <FormLabel className="text-white">Participant 1 Contact Number</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter 10-digit mobile number"
@@ -191,6 +224,68 @@ const AtlasQuiz = () => {
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="teamSize"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white">Team Size</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="bg-black/50 border-primary/30 text-white">
+                              <SelectValue placeholder="Select team size" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="1">Team of 1</SelectItem>
+                            <SelectItem value="2">Team of 2</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {teamSize === "2" && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="participant2Name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Participant 2 Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter participant 2 name"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="participant2Contact"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Participant 2 Contact Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter 10-digit mobile number"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
 
                   <FormField
                     control={form.control}
@@ -271,29 +366,73 @@ const AtlasQuiz = () => {
 
                   <FormField
                     control={form.control}
-                    name="paymentScreenshot"
-                    render={({ field: { onChange, value, ...field } }) => (
-                      <FormItem>
-                        <FormLabel className="text-white">Payment Screenshot (₹60)</FormLabel>
+                    name="agreedTerms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                         <FormControl>
-                          <div className="relative">
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
-                              onChange={(e) => onChange(e.target.files)}
-                              {...field}
-                            />
-                            <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
-                          </div>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="border-primary/30"
+                          />
                         </FormControl>
-                        <p className="text-xs text-white/60">
-                          Upload screenshot of your ₹60 payment transaction
-                        </p>
-                        <FormMessage />
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-white">
+                            I agree to the terms and conditions
+                          </FormLabel>
+                        </div>
                       </FormItem>
                     )}
                   />
+
+                  {/* Payment Section */}
+                  <div className="space-y-4 p-4 border border-primary/30 rounded-lg bg-black/30">
+                    <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <QrCode className="w-5 h-5" />
+                      Go to Payment – Scan the QR below to pay ₹60
+                    </h3>
+                    
+                    <div className="flex justify-center">
+                      <div className="bg-white p-4 rounded-lg">
+                        <img 
+                          src="/atlas-payment-qr.png" 
+                          alt="Payment QR Code - ₹60" 
+                          className="w-48 h-48 object-contain"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                            e.currentTarget.alt = 'Payment QR Code (Please add atlas-payment-qr.png to public folder)';
+                          }}
+                        />
+                      </div>
+                    </div>
+                    
+                    <p className="text-center text-sm text-white/70">
+                      Upload screenshot of your payment confirmation after paying ₹60
+                    </p>
+                    
+                    <FormField
+                      control={form.control}
+                      name="paymentScreenshot"
+                      render={({ field: { onChange, value, ...field } }) => (
+                        <FormItem>
+                          <FormLabel className="text-white">Payment Screenshot</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
+                                onChange={(e) => onChange(e.target.files)}
+                                {...field}
+                              />
+                              <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
                   <Button
                     type="submit"

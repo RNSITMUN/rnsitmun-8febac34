@@ -8,7 +8,7 @@ const Events = () => {
   const upcomingEvents = [
     {
   id: 1,
-  title: "ATLAS Quiz",
+  title: "ATLAS Quiz 2.0",
   subtitle: "The Intercollege Quiz",
   date: "24th September 2025",
   location: "RNSIT Campus",

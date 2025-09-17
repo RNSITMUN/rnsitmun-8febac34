@@ -5,12 +5,10 @@ import {
   Calendar,
   MapPin,
   Users,
-  Clock,
   Award,
   Globe,
   Sparkles,
   Trophy,
-  BookOpen,
 } from "lucide-react";
 
 const Events = () => {
@@ -20,14 +18,14 @@ const Events = () => {
       title: "ATLAS Quiz 2.0",
       subtitle: "The Intercollege Quiz",
       date: "24th September 2025",
+      prizePool: "₹6000",
       location: "RNSIT Campus",
       description:
         "ATLAS Quiz is RNSIT's flagship intercollegiate quiz competition, bringing together some of the sharpest minds to compete across diverse topics including current affairs, history, science, and culture.",
       status: "upcoming",
       participants: "100+ Teams",
-      prizePool: "₹6000",
       image: "/atlas-quiz-banner.jpg",
-      highlight: true, // ✅ Featured event
+      highlight: true, // Featured event
       icon: Trophy,
     },
     {
@@ -35,6 +33,7 @@ const Events = () => {
       title: "RNSMUN 2025",
       subtitle: "The Annual Flagship MUN Conference",
       date: "December 2025",
+      prizePool: "TBA",
       location: "RNSIT Campus",
       description:
         "RNSMUN 2025 will bring together delegates from across the nation for an immersive diplomatic experience featuring engaging committees, thought-provoking agendas, and a platform to showcase leadership.",
@@ -186,13 +185,16 @@ const Events = () => {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+              {/* Date + Prize Pool together */}
               <div className="flex items-center space-x-2 sm:space-x-3 text-foreground bg-primary/5 rounded-lg p-3 transition-colors group-hover:bg-primary/10">
                 <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                 <span className="font-inter font-medium text-sm sm:text-base">
                   {event.date}
+                  {event.prizePool && ` • ${event.prizePool}`}
                 </span>
               </div>
 
+              {/* Location */}
               <div className="flex items-center space-x-2 sm:space-x-3 text-foreground bg-primary/5 rounded-lg p-3 transition-colors group-hover:bg-primary/10">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                 <span className="font-inter font-medium text-sm sm:text-base">
@@ -200,6 +202,7 @@ const Events = () => {
                 </span>
               </div>
 
+              {/* Participants */}
               <div className="flex items-center space-x-2 sm:space-x-3 text-foreground bg-primary/5 rounded-lg p-3 transition-colors group-hover:bg-primary/10">
                 <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                 <span className="font-inter font-medium text-sm sm:text-base">
@@ -207,6 +210,7 @@ const Events = () => {
                 </span>
               </div>
 
+              {/* Committees (if any) */}
               {event.committees && (
                 <div className="flex items-center space-x-2 sm:space-x-3 text-foreground bg-primary/5 rounded-lg p-3 transition-colors group-hover:bg-primary/10">
                   <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />

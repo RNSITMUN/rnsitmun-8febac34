@@ -147,4 +147,16 @@ const Navbar = () => {
               <span className="relative z-10 flex items-center">
                 {link.name}
                 {location.pathname === link.path && (
-                  <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pu
+                  <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                )}
+              </span>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

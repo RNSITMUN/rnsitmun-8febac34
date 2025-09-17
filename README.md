@@ -1,76 +1,31 @@
-# RNSIT MUNsoc Website
+# RNSIT Model United Nations (RNSIT MUN)
 
-Official website for the Model United Nations Society at RNS Institute of Technology, Bengaluru.
+Welcome to the official website repository of **RNSIT MUN** – the Model United Nations conference hosted by **RNS Institute of Technology**, Bengaluru.
 
-Production: `https://rnsitmun.vercel.app`
+## 🌍 About RNSIT MUN
+RNSIT MUN is a student-led initiative that simulates the workings of the United Nations. It offers delegates from various institutions the opportunity to debate, negotiate and draft resolutions on global issues, honing diplomacy, public speaking, and problem-solving skills.
 
-## Tech Stack
-- React + TypeScript + Vite
-- Tailwind CSS + shadcn/ui
-- Supabase (Edge Functions for AI search and analytics)
+## 🎯 Our Purpose
+- Provide a platform for students to engage in meaningful discussions on international relations and policy making.
+- Develop leadership, negotiation, and critical thinking skills among youth.
+- Foster cross-college networking and collaboration.
+- Encourage awareness of global challenges and solutions.
 
-## Getting Started
+## 🏛️ The Event
+- **Host Institution:** RNS Institute of Technology, Bengaluru.
+- **Committees & Agendas:** Multiple UN committees with carefully curated agendas (details on the website).
+- **Delegates:** Open to students across colleges and universities.
+- **Workshops & Training:** Sessions to help first-time delegates understand MUN procedures.
 
-Prerequisites:
-- Node.js 18+ and npm 9+
+## 🌐 Website
+Visit our official website for registrations, committee details, background guides, and updates:  
+[https://rnsitmun.vercel.app/](https://rnsitmun.vercel.app/)
 
-Install and run locally:
-```bash
-npm install
-npm run dev
-# open http://localhost:8080
-```
-
-Build and preview:
-```bash
-npm run build
-npm run preview
-```
-
-## Scripts
-- `dev` — start Vite dev server
-- `build` — production build
-- `preview` — preview the production build locally
-
-## Project Structure
-```
-src/
-  pages/           # Route pages (Home, About, Events, Members, etc.)
-  components/      # Layout, sections, UI library components
-  integrations/    # Supabase client and types
-  hooks/, lib/     # Reusable hooks and utilities
-public/            # Static assets, PWA manifest, icons
-supabase/          # Edge Functions (ai-search, analytics-logger)
-scripts/           # SEO utilities (sitemap, ping search engines)
-```
-
-## Environment
-Create a `.env` (or `.env.local`) for local development if you use Supabase features.
-```
-VITE_SUPABASE_URL=...
-VITE_SUPABASE_ANON_KEY=...
-```
-
-## SEO & PWA
-- Custom `index.html` meta for titles/descriptions/social cards
-- `public/manifest.json` for PWA install name and icons
-- `scripts/generate-sitemap.js` and `scripts/ping-search-engines.js` for sitemap + indexing
-
-## Contributing
-1. Create a new branch from `main`
-2. Make changes and run locally
-3. Submit a pull request with a clear description and screenshots when relevant
-
-Code style:
-- TypeScript strict, descriptive names, no unused code
-- Keep components small and accessible (keyboard/focus/aria)
-
-## Deployment
-Hosted on Vercel. Every push to `main` deploys automatically.
-
-## Contact
-- Email: rnsitmun@rnsit.ac.in
-- Instagram/LinkedIn: RNSIT MUNsoc
+## 📩 Contact Us
+- Email: [insert official MUN email]
+- Instagram: [insert link]
+- LinkedIn: [insert link]
 
 ---
-© RNS Institute of Technology — RNSIT MUNsoc
+
+> ⚠️ **Note:** This repository contains the source code for the RNSIT MUN website. It is maintained by the RNSIT MUN technical team. All event-related information is available on the website itself.

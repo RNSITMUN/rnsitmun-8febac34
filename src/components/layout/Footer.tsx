@@ -53,7 +53,7 @@ const Footer = () => {
               </div>
               <div>
                 <h3 className="font-inter text-2xl md:text-3xl font-bold text-foreground">
-                  RNSIT MUN
+                  RNSIT MUNsoc
                 </h3>
                 <p className="text-foreground/70 text-sm font-roboto-mono tracking-wide">
                   Model United Nations

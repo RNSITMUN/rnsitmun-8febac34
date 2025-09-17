@@ -72,7 +72,7 @@ const Index = () => {
                       </div>
                       <div>
                         <p className="text-white font-semibold">Date</p>
-                        <p className="text-white/70 text-sm">Coming Soon</p>
+                        <p className="text-white/70 text-sm">24 September 2025</p>
                       </div>
                     </div>
                   </div>
@@ -96,8 +96,8 @@ const Index = () => {
                     
                     <div className="relative z-10 text-center">
                       <div className="text-6xl sm:text-7xl mb-4 animate-bounce">🧠</div>
-                      <h3 className="text-2xl font-bold text-white mb-2">Think Fast</h3>
-                      <p className="text-white/70">Challenge Your Mind</p>
+                      <h3 className="text-2xl font-bold text-white mb-2">Atlas 2.0</h3>
+                      <p className="text-white/70">AROUND THE GLOBE, ACROSS THE TIMELINE</p>
                     </div>
                   </div>
                 </div>

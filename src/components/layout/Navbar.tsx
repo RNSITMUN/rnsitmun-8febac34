@@ -54,10 +54,10 @@ const Navbar = () => {
               <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
             <div className="flex flex-col">
-              <span className="font-inter font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors max-w-[100px] sm:max-w-[120px] truncate">
-                RNSIT MUNSoc
+              <span className="font-inter font-bold text-sm sm:text-base text-foreground group-hover:text-primary transition-colors max-w-none">
+                RNSIT MUNsoc
               </span>
-              <span className="font-inter text-xs text-muted-foreground hidden sm:block tracking-wide max-w-[100px] sm:max-w-[120px] truncate">
+              <span className="font-inter text-xs text-muted-foreground hidden sm:block tracking-wide max-w-none">
                 Model United Nations
               </span>
             </div>

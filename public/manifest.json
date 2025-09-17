@@ -1,7 +1,7 @@
 {
-  "name": "RNSIT MUN - Model United Nations",
-  "short_name": "RNSIT MUN",
-  "description": "Official RNSIT Model United Nations society at RNS Institute of Technology, Bangalore",
+  "name": "RNSIT MUNsoc",
+  "short_name": "RNSIT MUNsoc",
+  "description": "Model United Nations",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

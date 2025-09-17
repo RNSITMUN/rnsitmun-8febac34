@@ -41,7 +41,7 @@ const AboutSection = () => {
       title: "Leadership Development",
       description: "Building tomorrow's leaders through hands-on diplomatic training and real-world problem-solving",
       icon: Target,
-      gradient: "from-secondary/20 to-secondary/10"
+      gradient: "from-primary/20 to-primary/10"
     },
     {
       title: "Global Perspective",

@@ -157,7 +157,7 @@ const AtlasQuiz = () => {
                 <CardContent className="p-6 text-center">
                   <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
                   <h3 className="font-semibold text-white mb-2">Date</h3>
-                  <p className="text-white/70">Coming Soon</p>
+                  <p className="text-white/70">24th September 2025</p>
                 </CardContent>
               </Card>
               
@@ -174,6 +174,17 @@ const AtlasQuiz = () => {
                   <Users className="w-8 h-8 text-primary mx-auto mb-3" />
                   <h3 className="font-semibold text-white mb-2">Entry Fee</h3>
                   <p className="text-white/70">₹60 per team</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+                        
+             <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
+                <CardContent className="p-6 text-center">
+                  <Users className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h3 className="font-semibold text-white mb-2">Prize Pool</h3>
+                  <p className="text-white/70">₹6000</p>
                 </CardContent>
               </Card>
             </div>

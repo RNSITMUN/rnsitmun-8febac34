@@ -22,11 +22,12 @@ const Navbar = () => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
+  // Atlas Quiz moved before Home
   const navLinks = [
+    { name: "Atlas Quiz", path: "/atlas-quiz" },
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Events", path: "/events" },
-    { name: "Atlas Quiz", path: "/atlas-quiz" },
     { name: "Members", path: "/members" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
@@ -68,18 +69,16 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`relative px-4 py-2 font-inter font-medium text-sm uppercase tracking-wide transition-all duration-300 rounded-lg group ${
-                  location.pathname === link.path
-                    ? "text-primary after:scale-x-100 after:origin-bottom-left"
-                    : "text-foreground hover:text-primary"
-                }`}
-              >
-                <span className="relative z-10">{link.name}</span>
-                <div
-                  className={`absolute inset-0 rounded-lg bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                    location.pathname === link.path ? "opacity-100" : ""
+                className={`relative px-5 py-2 font-inter font-medium text-sm uppercase tracking-wide transition-all duration-300 rounded-lg group flex items-center justify-center
+                  ${
+                    link.name === "Atlas Quiz"
+                      ? "bg-primary text-white shadow-md hover:shadow-lg hover:bg-primary/90"
+                      : location.pathname === link.path
+                      ? "text-primary after:scale-x-100 after:origin-bottom-left"
+                      : "text-foreground hover:text-primary"
                   }`}
-                ></div>
+              >
+                {link.name}
               </Link>
             ))}
           </div>
@@ -132,11 +131,14 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`px-6 py-4 font-inter text-lg font-medium transition-all duration-500 rounded-xl relative group touch-manipulation transform ${
-                location.pathname === link.path
-                  ? "text-primary font-semibold bg-gradient-to-r from-primary/10 to-accent/5 shadow-lg shadow-primary/10"
-                  : "text-foreground hover:text-primary hover:bg-primary/5"
-              }`}
+              className={`px-6 py-4 font-inter text-lg font-medium transition-all duration-500 rounded-xl relative group touch-manipulation transform
+                ${
+                  link.name === "Atlas Quiz"
+                    ? "bg-primary text-white shadow-md hover:shadow-lg hover:bg-primary/90"
+                    : location.pathname === link.path
+                    ? "text-primary font-semibold bg-gradient-to-r from-primary/10 to-accent/5 shadow-lg shadow-primary/10"
+                    : "text-foreground hover:text-primary hover:bg-primary/5"
+                }`}
               onClick={() => setIsMenuOpen(false)} // auto-close on link click
               style={{
                 transitionDelay: `${index * 80}ms`,
@@ -145,16 +147,4 @@ const Navbar = () => {
               <span className="relative z-10 flex items-center">
                 {link.name}
                 {location.pathname === link.path && (
-                  <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                )}
-              </span>
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-export default Navbar;
+                  <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pu

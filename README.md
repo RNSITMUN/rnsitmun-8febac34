@@ -22,9 +22,9 @@ Visit our official website for registrations, committee details, background guid
 [https://rnsitmun.vercel.app/](https://rnsitmun.vercel.app/)
 
 ## 📩 Contact Us
-- Email: [insert official MUN email]
-- Instagram: [insert link]
-- LinkedIn: [insert link]
+- Email: [mun@rnsit.ac.in]
+- Instagram: [https://www.instagram.com/rnsit.mun/]
+- LinkedIn: [https://in.linkedin.com/company/rnsit-mun-club]
 
 ---
 

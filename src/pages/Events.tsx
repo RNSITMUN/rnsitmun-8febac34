@@ -7,19 +7,21 @@ import { Calendar, MapPin, Users, Clock, Award, Globe, Sparkles, Trophy, BookOpe
 const Events = () => {
   const upcomingEvents = [
     {
-      id: 1,
-      title: "ATLAS Quiz",
-      subtitle: "THE INTERCOLLEGE QUIZ",
-      date: "24TH SEPTEMBER 2025",
-      location: "RNSIT Campus",
-      description: "Our flagship Model United Nations conference bringing together delegates from across the region for an immersive diplomatic experience.",
-      status: "upcoming",
-      participants: "200+ Expected",
-      committees: ["Fest"],
-      image: "/mun-logo.jpg",
-      highlight: true,
-      icon: Globe
-    },
+  id: 1,
+  title: "ATLAS Quiz",
+  subtitle: "The Intercollege Quiz",
+  date: "24th September 2025",
+  location: "RNSIT Campus",
+  description:
+    "ATLAS Quiz is RNSIT's flagship intercollegiate quiz competition, bringing together some of the sharpest minds to compete across diverse topics including current affairs, history, science, and culture.",
+  status: "upcoming",
+  participants: "100+ Teams",
+  prizePool: "₹6000", // ✅ fixed
+  image: "/atlas-quiz-banner.jpg", // ✅ replace with quiz banner instead of MUN logo
+  highlight: true,
+  icon: Globe, // you could also use Trophy, Brain, or Book icon
+}
+
     {
       id: 2,
       title: "Diplomatic Training Workshop",

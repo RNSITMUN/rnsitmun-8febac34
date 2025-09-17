@@ -8,9 +8,9 @@ const Events = () => {
   const upcomingEvents = [
     {
       id: 1,
-      title: "SDG Fest",
-      subtitle: "The Ultimate Diplomatic Experience",
-      date: "Coming Soon 2025",
+      title: "ATLAS Quiz",
+      subtitle: "THE INTERCOLLEGE QUIZ",
+      date: "24TH SEPTEMBER 2025",
       location: "RNSIT Campus",
       description: "Our flagship Model United Nations conference bringing together delegates from across the region for an immersive diplomatic experience.",
       status: "upcoming",

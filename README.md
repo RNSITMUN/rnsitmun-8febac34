@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# RNSIT MUNsoc Website
 
-## Project info
+Official website for the Model United Nations Society at RNS Institute of Technology, Bengaluru.
 
-**URL**: https://lovable.dev/projects/733a0a4a-9dab-46f9-8d07-9800ef2593b8
+Production: `https://rnsitmun.vercel.app`
 
-## How can I edit this code?
+## Tech Stack
+- React + TypeScript + Vite
+- Tailwind CSS + shadcn/ui
+- Supabase (Edge Functions for AI search and analytics)
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
+Prerequisites:
+- Node.js 18+ and npm 9+
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/733a0a4a-9dab-46f9-8d07-9800ef2593b8) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Install and run locally:
+```bash
+npm install
 npm run dev
+# open http://localhost:8080
 ```
 
-**Edit a file directly in GitHub**
+Build and preview:
+```bash
+npm run build
+npm run preview
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Scripts
+- `dev` — start Vite dev server
+- `build` — production build
+- `preview` — preview the production build locally
 
-**Use GitHub Codespaces**
+## Project Structure
+```
+src/
+  pages/           # Route pages (Home, About, Events, Members, etc.)
+  components/      # Layout, sections, UI library components
+  integrations/    # Supabase client and types
+  hooks/, lib/     # Reusable hooks and utilities
+public/            # Static assets, PWA manifest, icons
+supabase/          # Edge Functions (ai-search, analytics-logger)
+scripts/           # SEO utilities (sitemap, ping search engines)
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Environment
+Create a `.env` (or `.env.local`) for local development if you use Supabase features.
+```
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+```
 
-## What technologies are used for this project?
+## SEO & PWA
+- Custom `index.html` meta for titles/descriptions/social cards
+- `public/manifest.json` for PWA install name and icons
+- `scripts/generate-sitemap.js` and `scripts/ping-search-engines.js` for sitemap + indexing
 
-This project is built with:
+## Contributing
+1. Create a new branch from `main`
+2. Make changes and run locally
+3. Submit a pull request with a clear description and screenshots when relevant
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Code style:
+- TypeScript strict, descriptive names, no unused code
+- Keep components small and accessible (keyboard/focus/aria)
 
-## How can I deploy this project?
+## Deployment
+Hosted on Vercel. Every push to `main` deploys automatically.
 
-Simply open [Lovable](https://lovable.dev/projects/733a0a4a-9dab-46f9-8d07-9800ef2593b8) and click on Share -> Publish.
+## Contact
+- Email: rnsitmun@rnsit.ac.in
+- Instagram/LinkedIn: RNSIT MUNsoc
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+© RNS Institute of Technology — RNSIT MUNsoc

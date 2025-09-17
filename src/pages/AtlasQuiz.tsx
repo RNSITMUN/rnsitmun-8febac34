@@ -1,22 +1,47 @@
+import {
+  Calendar,
+  MapPin,
+  Users,
+  Trophy,
+  ArrowRight,
+  Upload,
+  QrCode,
+} from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Upload, Users, Trophy, Calendar, MapPin, QrCode } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z
   .object({
-    participant1Name: z.string().min(2, "Participant 1 name must be at least 2 characters"),
-    participant1Contact: z.string().regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number"),
+    participant1Name: z
+      .string()
+      .min(2, "Participant 1 name must be at least 2 characters"),
+    participant1Contact: z
+      .string()
+      .regex(/^[6-9]\d{9}$/, "Please enter a valid 10-digit mobile number"),
     teamSize: z.enum(["1", "2"], { required_error: "Please select team size" }),
     participant2Name: z.string().optional(),
     participant2Contact: z.string().optional(),
@@ -24,8 +49,12 @@ const formSchema = z
     representsRNSIT: z.boolean(),
     institutionName: z.string().optional(),
     teamName: z.string().min(3, "Team name must be at least 3 characters"),
-    agreedTerms: z.boolean().refine((val) => val === true, "You must agree to terms and conditions"),
-    paymentScreenshot: z.any().refine((files) => files?.length > 0, "Payment screenshot is required"),
+    agreedTerms: z
+      .boolean()
+      .refine((val) => val === true, "You must agree to terms and conditions"),
+    paymentScreenshot: z
+      .any()
+      .refine((files) => files?.length > 0, "Payment screenshot is required"),
   })
   .refine(
     (data) => {
@@ -89,32 +118,38 @@ const AtlasQuiz = () => {
       const file = data.paymentScreenshot[0];
       const fileName = `${Date.now()}_${file.name}`;
 
-      const { error: uploadError } = await supabase.storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
         .from("atlas-payment-proofs")
         .upload(fileName, file);
 
-      if (uploadError) throw new Error("Failed to upload payment screenshot");
+      if (uploadError) {
+        throw new Error("Failed to upload payment screenshot");
+      }
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("atlas-payment-proofs").getPublicUrl(fileName);
+      const { data: { publicUrl } } = supabase.storage
+        .from("atlas-payment-proofs")
+        .getPublicUrl(fileName);
 
-      const { error: insertError } = await supabase.from("atlas_registrations").insert({
-        participant1_name: data.participant1Name,
-        participant1_contact: data.participant1Contact,
-        participant2_name: data.teamSize === "2" ? data.participant2Name : null,
-        participant2_contact: data.teamSize === "2" ? data.participant2Contact : null,
-        stream_of_study: data.streamOfStudy,
-        is_rnsit: data.representsRNSIT,
-        institution_name: data.representsRNSIT ? null : data.institutionName,
-        team_name: data.teamName,
-        team_size: parseInt(data.teamSize),
-        agreed_terms: data.agreedTerms,
-        payment_amount: 60,
-        payment_proof_url: publicUrl,
-      });
+      const { error: insertError } = await supabase
+        .from("atlas_registrations")
+        .insert({
+          participant1_name: data.participant1Name,
+          participant1_contact: data.participant1Contact,
+          participant2_name: data.teamSize === "2" ? data.participant2Name : null,
+          participant2_contact: data.teamSize === "2" ? data.participant2Contact : null,
+          stream_of_study: data.streamOfStudy,
+          is_rnsit: data.representsRNSIT,
+          institution_name: data.representsRNSIT ? null : data.institutionName,
+          team_name: data.teamName,
+          team_size: parseInt(data.teamSize),
+          agreed_terms: data.agreedTerms,
+          payment_amount: 60,
+          payment_proof_url: publicUrl,
+        });
 
-      if (insertError) throw new Error("Failed to submit registration");
+      if (insertError) {
+        throw new Error("Failed to submit registration");
+      }
 
       toast({
         title: "Registration Successful!",
@@ -135,145 +170,334 @@ const AtlasQuiz = () => {
   };
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+    <section className="relative min-h-screen bg-gradient-to-br from-background via-background to-black/80 py-16 sm:py-24">
+      <div className="absolute inset-0 bg-[url('/atlas-bg.jpg')] bg-cover bg-center opacity-10" />
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h1 className="font-inter text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
+            Atlas Quiz 2025
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto font-medium">
+            Gear up for the biggest intercollegiate quiz at{" "}
+            <strong>RNSIT</strong> – test your knowledge, compete with
+            the brightest, and win exciting rewards!
+          </p>
+        </div>
+        <Layout>
+          <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
+                  <Trophy className="w-5 h-5 text-primary" />
+                  <span className="text-primary font-medium">Atlas Intercollege Quiz</span>
+                </div>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-inter tracking-tight">
+                  Register for <span className="text-gradient-lusion">Atlas Quiz</span>
+                </h1>
+                <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+                  Join us for an exciting intercollege quiz competition. Test your knowledge, compete with brilliant minds, and win amazing prizes!
+                </p>
+              </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
-          {/* Header Section */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
-              <Trophy className="w-5 h-5 text-primary" />
-              <span className="text-primary font-medium">Atlas Intercollege Quiz</span>
-            </div>
+              {/* Event Details */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
+                <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h3 className="font-semibold text-white mb-2">Date</h3>
+                    <p className="text-white/70">24th September 2025</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <MapPin className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h3 className="font-semibold text-white mb-2">Venue</h3>
+                    <p className="text-white/70">RNSIT Campus</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <Users className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h3 className="font-semibold text-white mb-2">Entry Fee</h3>
+                    <p className="text-white/70">₹60 per team</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <Trophy className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h3 className="font-semibold text-white mb-2">Prize Pool</h3>
+                    <p className="text-white/70">₹6,000</p>
+                  </CardContent>
+                </Card>
+              </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 font-inter tracking-tight">
-              Register for <span className="text-gradient-lusion">Atlas Quiz</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-              Join us for an exciting intercollege quiz competition. Test your knowledge, compete with brilliant
-              minds, and win amazing prizes!
-            </p>
-
-            {/* Event Details */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-              <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
-                <CardContent className="p-6 text-center">
-                  <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h3 className="font-semibold text-white mb-2">Date</h3>
-                  <p className="text-white/70">24th September 2025</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
-                <CardContent className="p-6 text-center">
-                  <MapPin className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h3 className="font-semibold text-white mb-2">Venue</h3>
-                  <p className="text-white/70">RNSIT Campus</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">
-                <CardContent className="p-6 text-center">
-                  <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h3 className="font-semibold text-white mb-2">Entry Fee</h3>
-                  <p className="text-white/70">₹60 per team</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Prize Pool */}
-            <Card className="bg-black/40 border-primary/20 backdrop-blur-sm max-w-sm mx-auto">
-              <CardContent className="p-6 text-center">
-                <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold text-white mb-2">Prize Pool</h3>
-                <p className="text-white/70">₹6000</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Registration Form */}
-          <Card className="max-w-2xl mx-auto bg-black/90 border-primary/30 backdrop-blur-lg shadow-2xl">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-white">Registration Form</CardTitle>
-              <p className="text-white/70">Fill in your details to register for Atlas Quiz</p>
-            </CardHeader>
-
-            <CardContent className="p-6">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  {/* existing form fields above... */}
-
-                  {/* Payment Section */}
-                  <div className="space-y-4 p-4 border border-primary/30 rounded-lg bg-black/30">
-                    <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                      <QrCode className="w-5 h-5" />
-                      Go to Payment – Scan the QR below to pay ₹60
-                    </h3>
-
-                    <p className="text-sm text-white/80 text-center">
-                      💡 Use your <span className="font-semibold text-primary">UPI app</span> (PhonePe, GPay, Paytm, etc.) to
-                      scan the QR and complete the payment.
-                    </p>
-
-                    <div className="flex justify-center">
-                      <div className="bg-white p-4 rounded-lg">
-                        <img
-                          src="/atlas-payment-qr.png"
-                          alt="Payment QR Code - ₹60"
-                          className="w-48 h-48 object-contain"
-                          onError={(e) => {
-                            e.currentTarget.src = "/placeholder.svg";
-                            e.currentTarget.alt =
-                              "Payment QR Code (Please add atlas-payment-qr.png to public folder)";
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <p className="text-center text-sm text-white/70">
-                      Upload screenshot of your payment confirmation after paying ₹60
-                    </p>
-
-                    <FormField
-                      control={form.control}
-                      name="paymentScreenshot"
-                      render={({ field: { onChange, value, ...field } }) => (
-                        <FormItem>
-                          <FormLabel className="text-white">Payment Screenshot</FormLabel>
-                          <FormControl>
-                            <div className="relative">
+              {/* Registration Form */}
+              <Card className="max-w-2xl mx-auto bg-black/90 border-primary/30 backdrop-blur-lg shadow-2xl">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl font-bold text-white">Registration Form</CardTitle>
+                  <p className="text-white/70">Fill in your details to register for Atlas Quiz</p>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="participant1Name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Participant 1 Name</FormLabel>
+                            <FormControl>
                               <Input
-                                type="file"
-                                accept="image/*"
-                                className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
-                                onChange={(e) => onChange(e.target.files)}
+                                placeholder="Enter participant 1 name"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
                                 {...field}
                               />
-                              <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="participant1Contact"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Participant 1 Contact Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter 10-digit mobile number"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="teamSize"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Team Size</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="bg-black/50 border-primary/30 text-white">
+                                  <SelectValue placeholder="Select team size" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="1">Team of 1</SelectItem>
+                                <SelectItem value="2">Team of 2</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {teamSize === "2" && (
+                        <>
+                          <FormField
+                            control={form.control}
+                            name="participant2Name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Participant 2 Name</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Enter participant 2 name"
+                                    className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="participant2Contact"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Participant 2 Contact Number</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Enter 10-digit mobile number"
+                                    className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
                       )}
-                    />
-                  </div>
+                      <FormField
+                        control={form.control}
+                        name="streamOfStudy"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Stream of Study</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="e.g., Computer Science, Mechanical, etc."
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="representsRNSIT"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="border-primary/30"
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel className="text-white">
+                                Does the team represent RNSIT?
+                              </FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      {!representsRNSIT && (
+                        <FormField
+                          control={form.control}
+                          name="institutionName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Institution Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Enter your institution name"
+                                  className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                      <FormField
+                        control={form.control}
+                        name="teamName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Team Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter a catchy team name"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="agreedTerms"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="border-primary/30"
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel className="text-white">
+                                I agree to the terms and conditions
+                              </FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <div className="space-y-4 p-4 border border-primary/30 rounded-lg bg-black/30">
+                        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                          <QrCode className="w-5 h-5" />
+                          Go to Payment – Scan the QR below to pay ₹60
+                        </h3>
+                        <div className="flex justify-center">
+                          <div className="bg-white p-4 rounded-lg">
+                            <img
+                              src="/atlas-payment-qr.png"
+                              alt="Payment QR Code - ₹60"
+                              className="w-48 h-48 object-contain"
+                              onError={(e) => {
+                                e.currentTarget.src = "/placeholder.svg";
+                                e.currentTarget.alt =
+                                  "Payment QR Code (Please add atlas-payment-qr.png to public folder)";
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <p className="text-center text-sm text-white/70">
+                          Upload screenshot of your payment confirmation after paying ₹60
+                        </p>
+                        <FormField
+                          control={form.control}
+                          name="paymentScreenshot"
+                          render={({ field: { onChange, value, ...field } }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Payment Screenshot</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
+                                    onChange={(e) => onChange(e.target.files)}
+                                    {...field}
+                                  />
+                                  <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(26,47,251,0.4)]"
+                      >
+                        {isSubmitting ? "Submitting..." : "Register Now"}
+                      </Button>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
 
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(26,47,251,0.4)]"
-                  >
-                    {isSubmitting ? "Submitting..." : "Register Now"}
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </div>
+              <div className="text-center mt-8">
+                <Button
+                  size="lg"
+                  className="btn-lusion inline-flex items-center justify-center"
+                >
+                  Register Now
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Layout>
       </div>
-    </Layout>
+    </section>
   );
 };
 

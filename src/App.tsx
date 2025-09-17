@@ -20,6 +20,7 @@ const Blogs = lazy(() => import("./pages/Blogs"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
+const AtlasQuiz = lazy(() => import("./pages/AtlasQuiz"));
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -48,6 +49,7 @@ const App = () => {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/terms" element={<Terms />} />
+                  <Route path="/atlas-quiz" element={<AtlasQuiz />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>

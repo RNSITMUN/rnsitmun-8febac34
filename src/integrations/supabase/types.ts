@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      atlas_quiz_registrations: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: number
+          institution: string | null
+          name: string
+          phone: string
+          screenshot_url: string | null
+          stream: string
+          team_name: string
+          transaction_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: number
+          institution?: string | null
+          name: string
+          phone: string
+          screenshot_url?: string | null
+          stream: string
+          team_name: string
+          transaction_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: number
+          institution?: string | null
+          name?: string
+          phone?: string
+          screenshot_url?: string | null
+          stream?: string
+          team_name?: string
+          transaction_id?: string | null
+        }
+        Relationships: []
+      }
       atlas_registrations: {
         Row: {
           agreed_terms: boolean

@@ -93,10 +93,18 @@ const registrationSchema = z
 // Payment form schema
 const paymentSchema = z.object({
   emailId: z.string().email("Please enter a valid email address"),
-  paymentScreenshot: z
-    .any()
-    .refine((files) => files?.length > 0, "Payment screenshot is required"),
-});
+  paymentScreenshot: z.any().optional(),
+  transactionId: z.string().optional(),
+}).refine(
+  (data) => {
+    return (data.paymentScreenshot && data.paymentScreenshot.length > 0) || 
+           (data.transactionId && data.transactionId.length > 0);
+  },
+  {
+    message: "Please provide either a payment screenshot or transaction ID",
+    path: ["paymentScreenshot"],
+  }
+);
 
 type RegistrationData = z.infer<typeof registrationSchema>;
 type PaymentData = z.infer<typeof paymentSchema>;
@@ -107,6 +115,7 @@ interface ReceiptData {
   participantName: string;
   emailId: string;
   receiptId: string;
+  proofType: string;
 }
 
 const AtlasQuiz = () => {
@@ -137,6 +146,7 @@ const AtlasQuiz = () => {
     resolver: zodResolver(paymentSchema),
     defaultValues: {
       emailId: registrationData?.emailId || "",
+      transactionId: "",
     },
   });
 
@@ -155,36 +165,46 @@ const AtlasQuiz = () => {
     setIsSubmitting(true);
 
     try {
-      const file = data.paymentScreenshot[0];
-      const fileName = `${Date.now()}_${file.name}`;
+      let screenshotUrl = null;
+      let proofType = "";
 
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("atlas-payment-proofs")
-        .upload(fileName, file);
+      // Handle screenshot upload if provided
+      if (data.paymentScreenshot && data.paymentScreenshot.length > 0) {
+        const file = data.paymentScreenshot[0];
+        const fileName = `${Date.now()}_${file.name}`;
 
-      if (uploadError) {
-        throw new Error("Failed to upload payment screenshot");
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("atlas-quiz-screenshots")
+          .upload(fileName, file);
+
+        if (uploadError) {
+          throw new Error("Failed to upload payment screenshot");
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from("atlas-quiz-screenshots")
+          .getPublicUrl(fileName);
+
+        screenshotUrl = publicUrl;
+        proofType = "Screenshot uploaded";
       }
 
-      const { data: { publicUrl } } = supabase.storage
-        .from("atlas-payment-proofs")
-        .getPublicUrl(fileName);
+      // Use transaction ID if screenshot not provided
+      if (data.transactionId && data.transactionId.length > 0) {
+        proofType = `Transaction ID: ${data.transactionId}`;
+      }
 
       const { error: insertError } = await supabase
-        .from("atlas_registrations")
+        .from("atlas_quiz_registrations")
         .insert({
-          participant1_name: registrationData.participant1Name,
-          participant1_contact: registrationData.participant1Contact,
-          participant2_name: registrationData.teamSize === "2" ? registrationData.participant2Name : null,
-          participant2_contact: registrationData.teamSize === "2" ? registrationData.participant2Contact : null,
-          stream_of_study: registrationData.streamOfStudy,
-          is_rnsit: registrationData.representsRNSIT,
-          institution_name: registrationData.representsRNSIT ? null : registrationData.institutionName,
+          name: registrationData.participant1Name,
+          phone: registrationData.participant1Contact,
           team_name: registrationData.teamName,
-          team_size: parseInt(registrationData.teamSize),
-          agreed_terms: registrationData.agreedTerms,
-          payment_amount: 60,
-          payment_proof_url: publicUrl,
+          stream: registrationData.streamOfStudy,
+          institution: registrationData.representsRNSIT ? "RNSIT" : registrationData.institutionName,
+          email: data.emailId,
+          screenshot_url: screenshotUrl,
+          transaction_id: data.transactionId || null,
         });
 
       if (insertError) {
@@ -196,6 +216,7 @@ const AtlasQuiz = () => {
         participantName: registrationData.participant1Name,
         emailId: data.emailId,
         receiptId,
+        proofType,
       });
 
       toast({
@@ -478,7 +499,7 @@ const AtlasQuiz = () => {
             </div>
           </div>
           <p className="text-center text-white/70">
-            Upload screenshot of your payment confirmation after paying ₹60
+            Provide payment proof: Upload screenshot OR enter transaction ID
           </p>
           
           <Form {...paymentForm}>
@@ -501,28 +522,53 @@ const AtlasQuiz = () => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={paymentForm.control}
-                name="paymentScreenshot"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <FormItem>
-                    <FormLabel className="text-white">Payment Screenshot</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
-                          onChange={(e) => onChange(e.target.files)}
-                          {...field}
-                        />
-                        <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
+              <div className="bg-black/30 border border-primary/20 rounded-lg p-4">
+                <h3 className="text-white font-semibold mb-4">Payment Proof (Choose one option)</h3>
+                <div className="space-y-4">
+                  <FormField
+                    control={paymentForm.control}
+                    name="paymentScreenshot"
+                    render={({ field: { onChange, value, ...field } }) => (
+                      <FormItem>
+                        <FormLabel className="text-white">Option 1: Upload Payment Screenshot</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
+                              onChange={(e) => onChange(e.target.files)}
+                              {...field}
+                            />
+                            <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <div className="text-center text-white/50">OR</div>
+                  
+                  <FormField
+                    control={paymentForm.control}
+                    name="transactionId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white">Option 2: Enter Transaction ID</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter UPI/Payment Transaction ID"
+                            className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormMessage />
+              </div>
               <Button
                 type="submit"
                 disabled={isSubmitting}
@@ -562,8 +608,9 @@ const AtlasQuiz = () => {
             <h3 className="text-lg font-semibold mb-2">Payment Status</h3>
             <p className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className="text-green-500 font-semibold">Successful</span>
+              <span className="text-green-500 font-semibold">✅ Successful</span>
             </p>
+            <p><span className="text-white/70">Proof:</span> {receiptData?.proofType}</p>
           </div>
           
           <div className="border-b border-primary/20 pb-4">

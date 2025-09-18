@@ -681,7 +681,8 @@ const AtlasQuiz = () => {
                       <CardContent className="p-6 text-center">
                         <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
                         <h3 className="font-semibold text-white mb-2">Date</h3>
-                        <p className="text-white/70">24th September 2025</p>
+                        <p className="text-white/70">October 2025</p>
+                        <p className="text-white/70">October 2025</p>
                       </CardContent>
                     </Card>
                     <Card className="bg-black/40 border-primary/20 backdrop-blur-sm">

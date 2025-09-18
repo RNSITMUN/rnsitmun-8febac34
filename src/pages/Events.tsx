@@ -17,7 +17,7 @@ const Events = () => {
       id: 1,
       title: "ATLAS Quiz 2.0",
       subtitle: "The Intercollege Quiz",
-      date: "24th September 2025",
+      date: "October 2025",
       location: "RNSIT Campus",
       description:
         "ATLAS Quiz is RNSIT's flagship intercollegiate quiz competition, bringing together some of the sharpest minds to compete across diverse topics including current affairs, history, science, and culture.",

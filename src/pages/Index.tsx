@@ -72,7 +72,7 @@ const Index = () => {
                       </div>
                       <div>
                         <p className="text-white font-semibold">Date</p>
-                        <p className="text-white/70 text-sm">24 September 2025</p>
+                        <p className="text-white/70 text-sm">October 2025</p>
                       </div>
                     </div>
                   </div>

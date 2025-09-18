@@ -241,8 +241,237 @@ const AtlasQuiz = () => {
                 <CardContent className="p-6">
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      {/* all of your existing form fields exactly as before */}
-                      {/* ... */}
+                      <FormField
+                        control={form.control}
+                        name="participant1Name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Participant 1 Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter participant 1 name"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="participant1Contact"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Participant 1 Contact Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter 10-digit mobile number"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="teamSize"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Team Size</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="bg-black/50 border-primary/30 text-white">
+                                  <SelectValue placeholder="Select team size" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="1">Team of 1</SelectItem>
+                                <SelectItem value="2">Team of 2</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {teamSize === "2" && (
+                        <>
+                          <FormField
+                            control={form.control}
+                            name="participant2Name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Participant 2 Name</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Enter participant 2 name"
+                                    className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="participant2Contact"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Participant 2 Contact Number</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Enter 10-digit mobile number"
+                                    className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
+                      )}
+                      <FormField
+                        control={form.control}
+                        name="streamOfStudy"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Stream of Study</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="e.g., Computer Science, Mechanical, etc."
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="representsRNSIT"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="border-primary/30"
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel className="text-white">
+                                Does the team represent RNSIT?
+                              </FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      {!representsRNSIT && (
+                        <FormField
+                          control={form.control}
+                          name="institutionName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Institution Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="Enter your institution name"
+                                  className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                      <FormField
+                        control={form.control}
+                        name="teamName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-white">Team Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter a catchy team name"
+                                className="bg-black/50 border-primary/30 text-white placeholder:text-white/50"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="agreedTerms"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                                className="border-primary/30"
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel className="text-white">
+                                I agree to the terms and conditions
+                              </FormLabel>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <div className="space-y-4 p-4 border border-primary/30 rounded-lg bg-black/30">
+                        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                          <QrCode className="w-5 h-5" />
+                          Go to Payment – Scan the QR below to pay ₹60
+                        </h3>
+                        <div className="flex justify-center">
+                          <div className="bg-white p-4 rounded-lg">
+                            <img
+                              src="/atlas-payment-qr.png"
+                              alt="Payment QR Code - ₹60"
+                              className="w-48 h-48 object-contain"
+                              onError={(e) => {
+                                e.currentTarget.src = "/placeholder.svg";
+                                e.currentTarget.alt =
+                                  "Payment QR Code (Please add atlas-payment-qr.png to public folder)";
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <p className="text-center text-sm text-white/70">
+                          Upload screenshot of your payment confirmation after paying ₹60
+                        </p>
+                        <FormField
+                          control={form.control}
+                          name="paymentScreenshot"
+                          render={({ field: { onChange, value, ...field } }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Payment Screenshot</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    className="bg-black/50 border-primary/30 text-white file:bg-primary file:text-white file:border-0 file:rounded-md file:px-3 file:py-1"
+                                    onChange={(e) => onChange(e.target.files)}
+                                    {...field}
+                                  />
+                                  <Upload className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50 pointer-events-none" />
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                       <Button
                         type="submit"
                         disabled={isSubmitting}
@@ -254,17 +483,6 @@ const AtlasQuiz = () => {
                   </Form>
                 </CardContent>
               </Card>
-
-              {/* ⬇️ Removed this extra block:
-              <div className="text-center mt-8">
-                <Button
-                  size="lg"
-                  className="btn-lusion inline-flex items-center justify-center"
-                >
-                  Register Now
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div> */}
             </div>
           </div>
         </Layout>
